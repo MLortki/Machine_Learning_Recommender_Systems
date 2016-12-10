@@ -21,24 +21,14 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{jones08}
-S.~P. Jones, ``How to write a great research paper,'' 2008, microsoft Research
-  Cambridge.
+\bibitem{Hu2008}
+Y.~Hu, Y.~Koren, and C.~Volinsky, ``{Collaborative Filtering for Implicit
+  Feedback Datasets Yifan},'' \emph{IEEE International Conference on Data
+  Mining}, pp. 263--272, 2008.
 
-\bibitem{ATLAS}
-{The ATLAS Collaboration}, ``Evidence for higgs boson decays to tau+tau- final
-  state with the atlas detector,'' \emph{Tech. Rep. ATLAS-CONF-2013-108},
-  November 2013, http://cds.cern.ch/record/1632191.
-
-\bibitem{documentation}
-C.~Adam-Bourdarios, G.~Cowan, C.~Germain, I.~Guyon, B.~Kegl, and D.~Rousseau,
-  ``Learning to discover: the higgs boson machine learning challenge,''
-  \emph{Documentation v1.8}, July 2014,
-  https://higgsml.lal.in2p3.fr/files/2014/04/documentation\_v1.8.pdf.
-
-\bibitem{2sigma}
-A.~Gelman, ``Scaling regression inputs by dividing by two standard
-  deviations,'' 2008, department of Statistics and Department of Political
-  Science, Columbia University, New York, NY, U.S.A.
+\bibitem{Aberger2009}
+C.~R. Aberger, Y.~Koren, R.~Bell, and C.~Volinsky, ``{Recommender : An Analysis
+  of Collaborative Filtering Techniques},'' \emph{Computer}, vol.~42, no.~8,
+  pp. 42--49, 2009.
 
 \end{thebibliography}

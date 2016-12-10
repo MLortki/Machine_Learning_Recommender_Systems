@@ -1,4 +1,33 @@
 \section{Introduction}
 
-The goal of this project is to do bla bla bla
+In the age of online platforms for entertainment, shopping and 
+knowledge transfer, the automatic characterization of the available items and
+the involved users has become a
+crucial factor of success. It is used to increase the ease of use 
+(bypass exhaustive searching of the database by suggesting appropriate pages),
+to maximize the effect of the platform (by placing appropriate recommendations,
+a user might buy/watch/read more than he originally intended) and to increase
+profit by intelligent ad placement and user screening for personalized marketing.
+The tools created for such purposes are commonly called "recommender
+systems".
+In some cases, the recommendations can be done using additionally provided
+information on users and items, such as demographic measures like age and gender or official
+popularity measures and item classifications. This content-based approach tends
+to be too simplistic and cumbersome for large databases and adds a dependeny
+on third-party data of unknown accuracy.  
+Methods grouped under the term "Collaborative filtering" overcome these
+difficulties by predicting behaviour based on past feedback. Feedback can either be
+of implicit form (how many times did a user click on an item, how long did he
+watch a TV series, etc.) or of explicit form, such as rankings or feedback form
+answers. \cite{Hu2008} 
+When users and items are grouped by their similarity and recommendations are
+done based on similar users (user-oriented models) or similar items
+(item-oriented models) respectively, one talks about neighborhood models. 
+If, on the other hand, the items and users are characterized by a set of $K$ features
+whose signification is a priori unknown, one talks bout latent factor models  
+The goal of this project is to apply collaborative filtering to the Netflix
+dataset, which consists of explicit feedback in terms of ratings of $N=$ users
+and $D=$ items. The main focus is on latent factor models, but neighborhood
+models can be taken into account to improve predictions.
+
 

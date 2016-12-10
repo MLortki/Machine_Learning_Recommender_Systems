@@ -45,3 +45,7 @@ in [2], ALS is best for sparse datasets while SGD is best for
 in [3], they say that ALS is better for implicit feedback, but SGD is faster and
 easier than ALS. 
 in [4], many methods to include neighborhood feedback are suggested.
+
+Problem with netflix solutions:
+in [5] temporal data used a lot! we cannot do that...
+
