@@ -1,0 +1,71 @@
+\section{Models and Methods}
+
+\subsection{Feature processing}
+Firstly, the original 30 input variables are screened for invalid values (NAN=$-999$ in the dataset). We observedthat NANs appear systematically: In accordance with the official description of the challenge \cite{documentation}, feature $x_{22}$  (i.e. the number of jets) determines whether certain other features are undefined. Feature $x_0$  contains NANs independently of $x_{22}$. Interestingly, the appearance of NANs in a sample, contains relevant structural information, e.g.  the conditional probability $P(y=1\mid x_0=\textit{NAN})$ differs greatly from the general frequency of occurrence of a signal $P(y=1)=0.3286$. We thus introduce 4 new binary features for the classes we discovered, see \autoref{tab:feat}. As these new categories ( $x_\textit{new}=1$, if sample $\in$ class, 0 otherwise), cover the information of $x_{22}$, we omit it in our analysis. 
+\begin{table}[]
+\centering
+\begin{tabular}{l|l|l|l|l}
+class & $\#$ valid & features in class         & $x\_22$      & $P(y=1 \mid class)$ \\ \hline
+0     & 72543    & 4-6, 12, 26-28     & 0           &                 
+0.2749
+ \\ \hline
+1     & 150087   & 23-25              & $\leq1$ &                 0.2222
+ \\ \hline
+2     & 211886   & 0                  & / &                 0.0821
+ \\ \hline
+3     & 250000   & 1-3,7-11, 13-22,29 & $\geq 2  $      &                 0.4208 
+\end{tabular}
+\caption{Overview NAN and new features}
+\label{tab:feat}
+\end{table}
+As the features have values on different scales, standardizing the data for the machine learning methods we employ is crucial. The combination of binary and continuous classifiers poses a challenge, motivated by \cite{2sigma}, we standardize only continuous input variables ($ \bar{x}=\dfrac{x-\mu}{2 \cdot\sigma}$), where NANs were ignored for calculation of mean $\mu$ and standard deviation $\sigma$, to give equal importance to both type of features. When  the learning methods use  higher polynomials in $x$ up to degree $d$, these are only build on the continuous features, so that the final dimension $m$ of the feature vector becomes
+$m = 1 + d \cdot N_{numerical} + N_{categorical}$.
+In a next step, we used scatter plots, histograms and the correlation coefficients $\rho$ to determine "redundancy" or outliers within our features. Features that could potentially be excluded from the analysis are $x_{9}$, $x_{23}$ as they are strongly linearly correlated with other features ($\rho > 0.9$). Finally, we remove outliers (distance $>10 \cdot \sigma$) in the training data  and  NAN values are set to 0 for the classification process.
+
+
+
+
+\subsection{Machine Learning methods}
+\subsubsection{Polynomial Regression}
+In the  machine learning task, we focus on polynomial ridge regression as it provides a good trade-off between training time, complexity of tuning parameters and performance.
+Ridge regression is the regularized version of  polynomial regression,
+where high complexity of the model is penalized in the weights as
+\begin{equation}
+\mathbf{w}^{*}=\arg\min_{\mathbf{w}} \frac{1}{2N}\sum_{n=1}^{N} [y_n -
+  \widetilde{\phi}(\mathbf{x}_n)^\mathrm{T}\mathbf{w}]^2+
+  \lambda\|\mathbf{w}\|_2^2 \text{,}
+\end{equation}
+where $\widetilde{\phi}(\mathbf{x}_n)$ denotes the polynomial development of the
+input vector $\mathbf{x}_n$ for all features that are not categorical.  An optimal degree $d$ and corresponding parameter $\lambda$ to avoid overfitting  was determined using cross validation. \newline
+Since this method does not directly classify samples, we "separate" the two categories by assigning all samples  $y < 0$ to -1  and  $y > 0$ to +1. This ad-hoc classification is unnatural for ridge regression, which is derived from a cost function based on the mean squared error. As discussed in the lecture, data can be  well
+approximated by polynomial regression in terms of squared error, while the deduced
+classification described above is suboptimal.
+We thus also considered the classification error (cle), defined as the percentage of misclassification: $\textit{cle}= 0.5 \cdot \sum_n (y-\bar{y})\setminus n$. This provides an additional measure to the root mean squared error (rmse) in cross-validation for the best $\lambda$ described below and equally allows us to predict values locally before submitting them to Kaggle.
+
+
+\subsubsection{Logistic Regression}
+
+In logistic regression, which
+is very close to an actual binary function, we compensate the drawbacks discussed above.
+In practice, fine tuning of parameters proves more difficult, as computational effort for calculating the weights increases significantly.
+We heuristically determined a step size $\gamma=0.001$ in combination with gradient descent showed acceptably smooth convergence, however results will not be discussed here, as ridge regression outperforms logistic regression for this parameters.
+
+\subsection{Evaluation}
+
+The evaluation of the above methods was performed in 3 steps:
+
+\begin{enumerate}
+  \item \textbf{Cross valdiation} A 10-fold cross validation is implemented
+    for the whole training dataset to
+  fix the hyperparameters. Using this method,  the features with the
+    highest ratio of non-valid measurements still have more than 7000 valid
+    points on average - enough for the method evaluations.
+  \item \textbf{Performance prediction} The training data was split into two
+    sets of ratio 1:2, emulating the actual data ratio between Kaggle's training and test set. The first set is then used to train the
+    weights, with hyperparameters fixed to the values obtained in cross
+    validation. These weights are then applied to the test set data to evaluate if the
+    classification performance is high enough for a submission. 
+  \item \textbf{Training} The
+    weights are trained again using the full  dataset to get the best
+    possible model.
+\end{enumerate}

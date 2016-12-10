@@ -1,0 +1,25 @@
+% underbrace with normal text
+\newcommand{\ubrace}[2]{\underbrace{#1}_{\textstyle #2}}
+\newcommand{\obrace}[2]{\overbrace{#1}^{\textstyle #2}}
+
+\newcommand{\dt}[1]{\ensuremath{\frac{d#1}{dt}}}
+\newcommand{\ut}[1]{\ensuremath{_\text{#1}}}
+
+% define what to do with vectors
+\newcommand{\vc}[1]{\ensuremath{\bm{#1}}}
+
+% command to add extra space between rows of an amsmath matrix
+\newcommand{\matskip}[1]{\\\noalign{\vspace{#1}}}
+
+% make common math commands shorter.
+\newcommand{\argmin}[1]{\underset{#1}{\operatorname{arg}\,\operatorname{min}}\;}
+\newcommand{\summ}[2]{\ensuremath{\sum_{#1 = 1}^{\g{#2}}}}
+\newcommand{\summz}[2]{\ensuremath{\sum_{#1 = 0}^{\g{#2}}}}
+\newcommand{\inR}[1]{\ensuremath{\in\mathbb{R}^{#1}}}
+\newcommand{\rowvector}[1]{\ensuremath{\begin{bmatrix} #1 \end{bmatrix}}}
+\renewcommand{\exp}{\text{exp}}
+\renewcommand{\max}{\text{max}}
+\newcommand{\pderiv}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
+\newcommand{\pdderiv}[2]{\ensuremath{\frac{\partial^2 #1}{\partial #2 ^2}}}
+\newcommand{\pddderiv}[3]{\ensuremath{\frac{\partial^2 #1}{\partial #2 \partial
+#3}}}
