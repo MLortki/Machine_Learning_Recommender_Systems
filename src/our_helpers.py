@@ -2,17 +2,20 @@
 import numpy as np
 import scipy.sparse as sp
 import csv
-from helpers import calculate_mse
+from helpers import calculate_mse, load_data
 
-def create_submission(path_output, nz_rows, nz_cols, ratings):
+def create_submission(path_output, ratings):
+    path_sample = "../data/sampleSubmission.csv"
+    ratings_nonzero  = load_data(path_sample)
+    (rows, cols, data) = sp.find(ratings_nonzero)
     fieldnames = ['Id', 'Prediction']
     with open(path_output, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        for i,row in enumerate(nz_rows):
-            valid_rating = min(max(ratings[row,nz_cols[i]],1),5)
+        for i,row in enumerate(rows):
+            valid_rating = min(max(ratings[row,cols[i]],1),5)
             valid_rating = round(valid_rating)
-            _id = "r{0}_c{1}".format(row+1,nz_cols[i]+1)
+            _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
 
 def split_data(ratings, num_items_per_user, num_users_per_item,
