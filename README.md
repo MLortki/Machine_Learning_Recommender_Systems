@@ -1,1 +1,4 @@
-# Machine_Learning_Recommender_Systems
+## Machine Learning Project2 - Recommender Systems
+# Manana Lordkipanidze, Aidasadat Mousavifar, Frederike Dümbgen
+
+
