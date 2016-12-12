@@ -57,10 +57,9 @@ def matrix_factorization_sgd(train, gamma, num_features, lambda_user,
         gamma /= 1.2
         
         (grad_item, grad_user) = gradients(train, item_features, user_features, nz_train)
-        user_features += -gamma * grad_user.T
-        item_features += -gamma * grad_item.T
+        user_features -= gamma * grad_user.T
+        item_features -= gamma * grad_item.T
         rmse = compute_error(train, user_features, item_features, nz_train)
         print("iter: {}, RMSE on training set: {}.".format(it, rmse))
         errors.append(rmse)
     return user_features, item_features
-

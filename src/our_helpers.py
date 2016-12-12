@@ -108,3 +108,20 @@ def baseline_item_mean(train, test):
         sum_mse += (v-item_mean[i,0])**2
         num += 1
     return sum_mse/(num*2.0)
+
+def baseline_combined(train, test):
+    mean = (train!=0).mean()
+    item_mean = (train!=0).mean(axis=1).reshape(-1,1)
+    user_mean = (train!=0).mean(axis=0).reshape(-1,1)
+
+    # this is supposedly the fastest way of doing this.
+    sum_mse = 0
+    num = 0
+    cx = sp.coo_matrix(test)
+    for i,j,v in zip(cx.row, cx.col, cx.data):
+        b_user = user_mean[j,0] - mean
+        b_item = item_mean[i,0] - mean
+        prediction = mean + b_user + b_item 
+        sum_mse += (v - prediction)**2
+        num += 1
+    return sum_mse/(num*2.0)
