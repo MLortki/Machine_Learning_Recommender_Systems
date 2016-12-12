@@ -1,0 +1,31 @@
+\section{Models and Methods}
+
+\subsection{Data analysis}
+Include statistics about data 
+
+\begin{itemize}
+  \item ratio of non-zero entries
+  \item how many ratings does each user make on average?
+  \item by how many users is each item rated on average? 
+\end{itemize}
+
+
+\subsection{Machine Learning methods}
+Find more about these methods in \cite{Aberger2009}
+\subsubsection{Stochastic Gradient Descent}
+\subsubsection{Bias Stochastic Gradient Descent}
+\subsubsection{Alternating Least Squares}
+
+\subsection{Evaluation}
+
+\begin{enumerate}
+  \item \textbf{Cross valdiation} A 10-fold cross validation is implemented
+    for the whole training dataset to fix the hyperparameters. 
+    TODO: what K should we choose to ensure enough valid users in dataset?   
+  \item \textbf{Performance prediction} The training data was split into two
+    sets of ratio 1:2, emulating the actual data ratio between Kaggle's training
+    and test set. Doing the matrix factorization with this training/test set
+    pair enables us to predict if we can expect a better performance on the
+    kaggle dataset.  
+    TODO: what is this ratio for this dataset? 
+\end{enumerate}

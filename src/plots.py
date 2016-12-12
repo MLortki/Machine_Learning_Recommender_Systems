@@ -29,7 +29,7 @@ def plot_raw_data(ratings):
     ax2.grid()
 
     plt.tight_layout()
-    plt.savefig("stat_ratings")
+    plt.savefig("../results/stat_ratings")
     plt.show()
     # plt.close()
     return num_items_per_user, num_users_per_item
@@ -49,5 +49,5 @@ def plot_train_test_data(train, test):
     ax2.set_ylabel("Items")
     ax2.set_title("Test data")
     plt.tight_layout()
-    plt.savefig("train_test")
+    plt.savefig("../results/train_test")
     plt.show()

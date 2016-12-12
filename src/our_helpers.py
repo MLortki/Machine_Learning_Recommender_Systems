@@ -2,17 +2,20 @@
 import numpy as np
 import scipy.sparse as sp
 import csv
-from helpers import calculate_mse
+from helpers import calculate_mse, load_data
 
-def create_submission(path_output, nz_rows, nz_cols, ratings):
+def create_submission(path_output, ratings):
+    path_sample = "../data/sampleSubmission.csv"
+    ratings_nonzero  = load_data(path_sample)
+    (rows, cols, data) = sp.find(ratings_nonzero)
     fieldnames = ['Id', 'Prediction']
     with open(path_output, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        for i,row in enumerate(nz_rows):
-            valid_rating = min(max(ratings[row,nz_cols[i]],1),5)
+        for i,row in enumerate(rows):
+            valid_rating = min(max(ratings[row,cols[i]],1),5)
             valid_rating = round(valid_rating)
-            _id = "r{0}_c{1}".format(row+1,nz_cols[i]+1)
+            _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
 
 def split_data(ratings, num_items_per_user, num_users_per_item,
@@ -103,5 +106,22 @@ def baseline_item_mean(train, test):
     cx = sp.coo_matrix(test)
     for i,j,v in zip(cx.row, cx.col, cx.data):
         sum_mse += (v-item_mean[i,0])**2
+        num += 1
+    return sum_mse/(num*2.0)
+
+def baseline_combined(train, test):
+    mean = (train!=0).mean()
+    item_mean = (train!=0).mean(axis=1).reshape(-1,1)
+    user_mean = (train!=0).mean(axis=0).reshape(-1,1)
+
+    # this is supposedly the fastest way of doing this.
+    sum_mse = 0
+    num = 0
+    cx = sp.coo_matrix(test)
+    for i,j,v in zip(cx.row, cx.col, cx.data):
+        b_user = user_mean[j,0] - mean
+        b_item = item_mean[i,0] - mean
+        prediction = mean + b_user + b_item 
+        sum_mse += (v - prediction)**2
         num += 1
     return sum_mse/(num*2.0)
