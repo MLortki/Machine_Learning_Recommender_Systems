@@ -3,6 +3,7 @@ import numpy as np
 import scipy.sparse as sp
 import csv
 from helpers import calculate_mse, load_data
+from helpers import build_index_groups
 
 def create_submission(path_output, ratings):
     path_sample = "../data/sampleSubmission.csv"
@@ -17,6 +18,9 @@ def create_submission(path_output, ratings):
             valid_rating = round(valid_rating)
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
+            
+            
+
 
 def split_data(ratings, num_items_per_user, num_users_per_item,
                min_num_ratings, p_test=0.1):
@@ -125,3 +129,355 @@ def baseline_combined(train, test):
         sum_mse += (v - prediction)**2
         num += 1
     return sum_mse/(num*2.0)
+
+
+def init_MF(train, num_features):
+    """init the parameter for matrix factorization."""
+    
+    
+    user_features = 3 * np.random.rand( num_features, train.shape[1])
+    item_features = 3 * np.random.rand( num_features, train.shape[0])
+    
+    item_features[0, :] = train[train != 0].mean(axis = 1)
+    
+    return user_features, item_features
+
+
+def compute_error(data, user_features, item_features, nz):
+    """compute the loss (MSE) of the prediction of nonzero elements."""
+    # ***************************************************
+    # INSERT YOUR CODE HERE
+    # TODO
+    # calculate rmse (we only consider nonzero entries.)
+    # ***************************************************
+    X = np.dot ( np.transpose(item_features), user_features )
+    
+    rmse = 0
+    counter = 0
+    for i, j in nz:
+        
+        rmse += (data[i,j] - X[i,j])**2
+        counter += 1
+    
+    rmse = rmse/(counter)
+    return rmse
+
+def compute_error2(data, pred, nz):
+    
+    rmse = 0
+    counter = 0
+    for i, j in nz:
+        
+        rmse += (data[i,j] - pred[i,j])**2
+        counter += 1
+    
+    rmse = rmse/(counter)
+    return rmse
+
+def update_user_feature(
+        train, item_features, lambda_user,
+        nnz_items_per_user):   #, nz_user_itemindices
+    """update user feature matrix."""
+    # ***************************************************
+    # INSERT YOUR CODE HERE
+    # TODO
+    # update and return user feature.
+    # ***************************************************
+    N = train.shape[1]
+    D = train.shape[0]
+    K = item_features.shape[0]
+    
+    new_user_features = np.zeros((K, N))
+    
+    #print("UPDATE USER")
+    for g , value in nnz_items_per_user:
+    
+        #print("column index = ", g)
+        #print("elementebis raodenoba = ", value.shape)
+        #scipy lil sparse matrixisdan ro gadaviyvanot numpy arrayshi
+        #print(g)
+        X = train[value, g].toarray()
+        #print("shape of new train data = ", X.shape)
+        Wt = item_features[: , value]
+        #print("shape of Wt = ", Wt.shape)
+        #print(type(Wt))
+        #print(type(X))
+        new_user_features[:, g] = np.linalg.solve( 
+            np.dot(Wt, np.transpose(Wt))+ lambda_user* value.shape[0]* np.eye(K) ,
+            np.dot( Wt, X)).flatten()
+    
+    
+    return new_user_features
+
+def update_item_feature(
+        train, user_features, lambda_item,
+        nnz_users_per_item):   #, nz_item_userindices
+    """update item feature matrix."""
+    N = train.shape[1]
+    D = train.shape[0]
+    K = user_features.shape[0]
+        
+    new_item_features = np.zeros((K, D))
+    #print("UPDATE ITEM")
+    for g, value  in nnz_users_per_item:
+        
+        #print("column index = ", g)
+        #print("elementebis raodenoba = ", value.shape)
+        
+        X = train[g,value].toarray()
+        #print("shape of new train data = ", X.shape)
+        Zt = user_features[: , value]
+        #print("shape of Zt = ", Zt.shape)
+        new_item_features[:, g] = np.linalg.solve( 
+            np.dot(Zt, np.transpose(Zt))+ lambda_item * value.shape[0]* np.eye(K)  ,
+            np.dot( Zt, np.transpose(X))).flatten()
+        
+    
+    return new_item_features
+
+def ALS (train , test, num_features,lambda_user, 
+         lambda_item, stop_criterion,error_list,rng ):
+    
+    # initialize user and movies latent matrices
+    user_features, item_features = init_MF(train, num_features)
+    
+    
+    #indices of nonzero elements
+    nz_row, nz_col = train.nonzero()
+    nz_train = list(zip(nz_row, nz_col))
+    
+    nz_row, nz_col = test.nonzero()
+    nz_test = list(zip(nz_row, nz_col))
+
+    nz_train, nz_row_colindices, nz_col_rowindices = build_index_groups(train)   
+   
+  
+    #print(nz_train)
+    #print(nz_row_colindices )
+    #print("Original data shape: ", train.shape)
+    #print(nz_train.shape)
+    #print(nz_row_colindices.shape)
+    #print(nz_col_rowindices)
+    #i=0
+                
+    #while True:
+    
+    rmses_te = []
+    rmses_tr = []
+    
+    for i in range(rng):
+
+        user_features_new = update_user_feature(
+            train, item_features, lambda_user, nz_col_rowindices)
+        if( user_features_new.shape != user_features.shape):
+            print("AAAAA")
+        item_features_new = update_item_feature(
+            train, user_features_new, lambda_item, nz_row_colindices)
+
+        rmse_te = compute_error(test, user_features_new, item_features_new , nz_test)
+        rmse_tr = compute_error(train, user_features_new, item_features_new , nz_train)
+        
+        rmses_tr.append(rmse_tr)
+        rmses_te.append(rmse_te)
+        
+        #if i % 5 == 0:
+            #train_errors.append(rmse_tr)
+            #test_errors.append(rmse_te)
+        print("iter: {}, RMSE on training set: {}.".format(i, rmse_tr))
+        print("iter: {}, RMSE on test set: {}.".format(i, rmse_te))
+        #i +=1
+        if np.linalg.norm(item_features_new - item_features ) < stop_criterion and np.linalg.norm(user_features_new - user_features ) < stop_criterion:
+            break
+            
+        if rmse_te > compute_error(test, user_features_new, item_features_new, nz_test):
+            break
+
+        item_features = item_features_new
+        user_features = user_features_new
+    
+    
+    rmse_te = compute_error(test, user_features, item_features, nz_test)
+    rmse_tr = compute_error(train, user_features, item_features, nz_train)
+    print("Final RMSE on test data: {}.".format(rmse_te))
+
+    return item_features, user_features,  rmse_tr, rmse_te 
+
+def gen_train_test(ratings, nz_ratings, i_ind , j_ind):
+    
+    #estimating shape
+    d = ratings.shape[0]
+    n = ratings.shape[1] 
+    
+    
+    train_index = [ nz_ratings[i] for i in i_ind]
+    test_index = [ nz_ratings[j] for j in j_ind]
+
+    #print("train index size = ", len(train_index))
+    #print("test index size = ", len(test_index))
+
+    
+    if len(train_index) + len(test_index) != len(nz_ratings):
+        print("Wrong !!")
+
+    train = np.zeros((d,n )) 
+    test  = np.zeros((d,n))
+
+    for ind in train_index:
+        i = ind[0]
+        j = ind[1]
+        train[i,j] = ratings[i,j]
+        
+    for ind in test_index:
+        i = ind[0]
+        j = ind[1]
+        test[i,j] = ratings[i,j]
+        
+    train = sp.lil_matrix(train)
+    test = sp.lil_matrix(test)
+    
+    nz_row, nz_col = train.nonzero()
+    nz_train = list(zip(nz_row, nz_col))
+    
+    nz_row, nz_col = test.nonzero()
+    nz_test = list(zip(nz_row, nz_col))
+    
+    #print("nonzero elems in train: ", len(nz_train))
+    #print("nonzero elems in test: ", len(nz_test))
+    
+    return train, test
+
+def cross_validation(
+    ratings, n_of_splits,num_features,lambdas,
+    stop_criterion, error_list, rng):
+
+   
+    #cross_validation(n_splits)
+    kf = skm.KFold(n_splits=n_of_splits, shuffle = True)
+    
+    #creating matrix of non-zero indices
+    nz_row, nz_col = ratings.nonzero()
+    nz_ratings = list(zip(nz_row, nz_col))
+    
+    #print("Length of list of nonzero elems of ratings is : ", len(nz_ratings) )
+    
+    t = range(nz_row.shape[0])
+    
+    #t = nz_row.shape[0]
+    #nz_row = nz_row.reshape(t,1)
+    #nz_col = nz_col.reshape(t,1)
+    #nz_ratings = np.concatenate((nz_row, nz_col), axis = 1)
+    
+    #print(nz_row.shape)
+    #print(nz_col.shape)
+    #print(nz_ratings.shape)
+    
+    # creating matrix where results of cross validation are stored
+    test_avg_cost =  np.zeros(len(lambdas))
+    train_avg_cost = np.zeros(len(lambdas))
+
+     
+    for ind,lambda_ in enumerate(lambdas):
+            
+        print(ind+1, "/",len(lambdas))
+        lambda_user = lambda_[0]
+        lambda_item = lambda_[1]
+            
+        avg_train = 0
+        avg_test = 0
+            
+        print("lambda user = ",lambda_user, "lambda item = ", lambda_item)
+
+        for i, j in kf.split(t):
+            
+            
+            
+            #print("train: ",i.shape)
+            #print("test: ",j.shape)
+            #print(j)
+            #print("Percentage of train and test reps. : ", 
+                  #len(i)*100/nz_row.shape[0],"% ", len(j)*100/nz_row.shape[0],"%" )
+            
+            train , test = gen_train_test(ratings, nz_ratings, i , j)
+            itf, usf, rmse_tr, rmse_te = ALS (train , test, num_features,lambda_user, 
+                                              lambda_item, stop_criterion,error_list,rng )
+                
+            avg_train += rmse_tr
+            avg_test += rmse_te
+                    
+                
+                
+        avg_train /= n_of_splits
+        avg_test /= n_of_splits
+        print("average train error = ",avg_train)
+        print("average test error = ",avg_test)
+        test_avg_cost[ind] = avg_test
+        train_avg_cost[ind] = avg_train
+    
+    return test_avg_cost, train_avg_cost
+            
+
+def bias_correction (full_ratings, test):
+    
+    nz_rows, nz_cols = test.nonzero()
+    nz_test = list( zip(nz_rows, nz_cols))
+    
+    mean_te = 0
+    mean_pr = 0
+    for i,j in nz_test:
+        mean_te += test[i,j]
+        mean_pr += full_ratings[i,j]
+        
+    mean_te /= len(nz_test)
+    mean_pr /= len(nz_test)
+    
+    #mean_pr= full_ratings.mean()
+    full_ratings += (mean_te - mean_pr)
+    
+    return full_ratings
+
+
+def main(ratings):
+    
+    """Alternating Least Squares (ALS) algorithm."""
+    # define parameters
+    num_features = 30   # K in the lecture notes
+    lambda_user = 0.3
+    lambda_item = 0.3
+    stop_criterion = 1e-4
+    change = 1
+    error_list = [0, 0]
+    rng = 100
+    
+    #initialization
+    sratings = sp.lil_matrix(ratings)
+    train_errors = []
+    test_errors = []
+    
+    lambdas_user = np.linspace( 0.1, 1, 2)
+    lambdas_item = np.linspace( 0.1, 1, 2)
+    lambdas = [(x, y) for x in lambdas_user for y in lambdas_item]
+    
+    print("number of different pairs of lambdas : ",len(lambdas))
+    
+    # set seed
+    np.random.seed(988)
+    
+    
+    test_avg_cost, train_avg_cost = cross_validation(
+        sratings, 3, num_features, lambdas, stop_criterion, error_list, rng)
+    
+    ind = np.argmin(test_avg_cost)
+    print("smallest avg error: ",test_avg_cost[ind])
+    
+    lambda_ = lambdas[ind]
+    
+    
+    vl, train, test = split_data(ratings, num_items_per_user, num_users_per_item,0)
+    
+    item_features , user_features , rmse_tr, rmse_te = ALS (
+        train , test, num_features,lambda_[0], 
+        lambda_[1], stop_criterion,error_list, 250 )
+    
+    ratings_full = np.dot(np.transpose(item_features),user_features)
+    
+    return ratings_full, train_errors, test_errors
