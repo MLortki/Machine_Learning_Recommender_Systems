@@ -4,6 +4,8 @@ import scipy.sparse as sp
 import csv
 from helpers import calculate_mse, load_data
 from helpers import build_index_groups
+import plots as pl
+import sklearn.model_selection as skm
 
 def create_submission(path_output, ratings):
     path_sample = "../data/sampleSubmission.csv"
@@ -235,7 +237,7 @@ def update_item_feature(
     
     return new_item_features
 
-def ALS (train ,test, num_features,lambda_, stop_criterion,rng ):
+def ALS (train ,test, num_features,lambda_, stop_criterion,rng = None):
     
     # initialize user and movies latent matrices
     user_features, item_features = init_MF(train, num_features)
@@ -258,12 +260,14 @@ def ALS (train ,test, num_features,lambda_, stop_criterion,rng ):
     #print(nz_row_colindices.shape)
     #print(nz_col_rowindices)
     
-    i=0
+   
+    i = 0
+    rmses_te = []
+    rmses_tr = []
                 
     while True:
     
-    rmses_te = []
-    rmses_tr = []
+
     
     #for i in range(rng):
 
@@ -287,10 +291,10 @@ def ALS (train ,test, num_features,lambda_, stop_criterion,rng ):
         #i +=1
      
             
-        if rmse_te > rmses_te[len(rmses_te)-1]:
+        if i > 0 and rmse_te > rmses_te[len(rmses_te)-1]:
             break
             
-        if rmses_te[len(rmses_te)-1] - rmse_te < stop_criterion:
+        if i > 0 and rmses_te[-1] - rmse_te < stop_criterion:
             break
         
         rmses_tr.append(rmse_tr)
@@ -298,6 +302,8 @@ def ALS (train ,test, num_features,lambda_, stop_criterion,rng ):
 
         item_features = item_features_new
         user_features = user_features_new
+        
+        i += 1
     
     
     rmse_te = compute_error(test, user_features, item_features, nz_test)
@@ -352,7 +358,7 @@ def gen_train_test(ratings, nz_ratings, i_ind , j_ind):
 
 def cross_validation(
     ratings, n_of_splits,num_features,lambdas,
-    stop_criterion, error_list, rng):
+    stop_criterion):
 
    
     #cross_validation(n_splits)
@@ -378,18 +384,18 @@ def cross_validation(
     # creating matrix where results of cross validation are stored
     test_avg_cost =  np.zeros(len(lambdas))
     train_avg_cost = np.zeros(len(lambdas))
+    errors = []
 
      
     for ind,lambda_ in enumerate(lambdas):
             
         print(ind+1, "/",len(lambdas))
-        lambda_user = lambda_[0]
-        lambda_item = lambda_[1]
+     
             
         avg_train = 0
         avg_test = 0
             
-        print("lambda user = ",lambda_user, "lambda item = ", lambda_item)
+        print("lambda  = ",lambda_)
 
         for i, j in kf.split(t):
             
@@ -402,11 +408,11 @@ def cross_validation(
                   #len(i)*100/nz_row.shape[0],"% ", len(j)*100/nz_row.shape[0],"%" )
             
             train , test = gen_train_test(ratings, nz_ratings, i , j)
-            itf, usf, rmse_tr, rmse_te = ALS (train , test, num_features,lambda_user, 
-                                              lambda_item, stop_criterion,error_list,rng )
+            itf, usf, rmses_tr, rmses_te = ALS (train , test, num_features,lambda_, 
+                                               stop_criterion )
                 
-            avg_train += rmse_tr
-            avg_test += rmse_te
+            avg_train += rmses_tr[-1]
+            avg_test += rmses_te[-1]
                     
                 
                 
@@ -416,8 +422,9 @@ def cross_validation(
         print("average test error = ",avg_test)
         test_avg_cost[ind] = avg_test
         train_avg_cost[ind] = avg_train
+        errors.append(rmses_te)
     
-    return test_avg_cost, train_avg_cost
+    return test_avg_cost, train_avg_cost, errors
             
 
 def bias_correction (full_ratings, test):
@@ -444,31 +451,34 @@ def main(ratings):
     
     """Alternating Least Squares (ALS) algorithm."""
     # define parameters
-    num_features = 30   # K in the lecture notes
+    num_features = 1   # K in the lecture notes
     lambda_user = 0.3
     lambda_item = 0.3
     stop_criterion = 1e-4
-    change = 1
-    error_list = [0, 0]
-    rng = 100
+    n_splits = 2
+
     
     #initialization
     sratings = sp.lil_matrix(ratings)
     train_errors = []
     test_errors = []
     
-    lambdas_user = np.linspace( 0.1, 1, 2)
-    lambdas_item = np.linspace( 0.1, 1, 2)
-    lambdas = [(x, y) for x in lambdas_user for y in lambdas_item]
+    lambdas = np.linspace( 0.001, 1, 2)
+
     
-    print("number of different pairs of lambdas : ",len(lambdas))
+    print("number of different lambdas : ",len(lambdas))
     
     # set seed
     np.random.seed(988)
     
     
-    test_avg_cost, train_avg_cost = cross_validation(
-        sratings, 3, num_features, lambdas, stop_criterion, error_list, rng)
+    test_avg_cost, train_avg_cost , errors = cross_validation(
+        sratings, n_splits, num_features, lambdas, stop_criterion)
+    
+    #generating plot
+    path = "K%d/l%d_nsp%d.jpg"%(num_features, len(lambdas),n_splits )
+    
+    pl.plot_cv_errors(errors, lambdas, num_features, path)
     
     ind = np.argmin(test_avg_cost)
     print("smallest avg error: ",test_avg_cost[ind])
