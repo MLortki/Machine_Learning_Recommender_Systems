@@ -235,8 +235,7 @@ def update_item_feature(
     
     return new_item_features
 
-def ALS (train , test, num_features,lambda_user, 
-         lambda_item, stop_criterion,error_list,rng ):
+def ALS (train ,test, num_features,lambda_, stop_criterion,rng ):
     
     # initialize user and movies latent matrices
     user_features, item_features = init_MF(train, num_features)
@@ -258,27 +257,27 @@ def ALS (train , test, num_features,lambda_user,
     #print(nz_train.shape)
     #print(nz_row_colindices.shape)
     #print(nz_col_rowindices)
-    #i=0
+    
+    i=0
                 
-    #while True:
+    while True:
     
     rmses_te = []
     rmses_tr = []
     
-    for i in range(rng):
+    #for i in range(rng):
 
         user_features_new = update_user_feature(
-            train, item_features, lambda_user, nz_col_rowindices)
+            train, item_features, lambda_, nz_col_rowindices)
         if( user_features_new.shape != user_features.shape):
             print("AAAAA")
         item_features_new = update_item_feature(
-            train, user_features_new, lambda_item, nz_row_colindices)
+            train, user_features_new, lambda_, nz_row_colindices)
 
         rmse_te = compute_error(test, user_features_new, item_features_new , nz_test)
         rmse_tr = compute_error(train, user_features_new, item_features_new , nz_train)
         
-        rmses_tr.append(rmse_tr)
-        rmses_te.append(rmse_te)
+     
         
         #if i % 5 == 0:
             #train_errors.append(rmse_tr)
@@ -286,11 +285,16 @@ def ALS (train , test, num_features,lambda_user,
         print("iter: {}, RMSE on training set: {}.".format(i, rmse_tr))
         print("iter: {}, RMSE on test set: {}.".format(i, rmse_te))
         #i +=1
-        if np.linalg.norm(item_features_new - item_features ) < stop_criterion and np.linalg.norm(user_features_new - user_features ) < stop_criterion:
+     
+            
+        if rmse_te > rmses_te[len(rmses_te)-1]:
             break
             
-        if rmse_te > compute_error(test, user_features_new, item_features_new, nz_test):
+        if rmses_te[len(rmses_te)-1] - rmse_te < stop_criterion:
             break
+        
+        rmses_tr.append(rmse_tr)
+        rmses_te.append(rmse_te)
 
         item_features = item_features_new
         user_features = user_features_new
@@ -300,7 +304,7 @@ def ALS (train , test, num_features,lambda_user,
     rmse_tr = compute_error(train, user_features, item_features, nz_train)
     print("Final RMSE on test data: {}.".format(rmse_te))
 
-    return item_features, user_features,  rmse_tr, rmse_te 
+    return item_features, user_features,  rmses_tr, rmses_te 
 
 def gen_train_test(ratings, nz_ratings, i_ind , j_ind):
     
@@ -481,3 +485,4 @@ def main(ratings):
     ratings_full = np.dot(np.transpose(item_features),user_features)
     
     return ratings_full, train_errors, test_errors
+

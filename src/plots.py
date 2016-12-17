@@ -53,11 +53,11 @@ def plot_train_test_data(train, test):
     plt.savefig("../results/train_test")
     plt.show()
     
-def plot_train_test_errors(train_errors, test_errors, lambda_ , K , path):
+def plot_train_test_errors(train_errors, test_errors, lambda_str , K , path, rng):
     
     plt.plot(range(rng), train_errors, marker='o', label='Training Data');
     plt.plot(range(rng), test_errors, marker='v', label='Test Data');
-    plt.title('ALS-WR Learning Curve, lambda = %.5f, K = %d'%(lambda_, K))
+    plt.title('ALS-WR Learning Curve, lambda = %s, K = %d'%(lambda_str, K))
     plt.xlabel('Number of Epochs');
     plt.ylabel('RMSE');
     plt.legend()
