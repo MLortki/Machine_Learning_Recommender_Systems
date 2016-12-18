@@ -72,35 +72,19 @@ if __name__=="__main__":
     train[3,1] = 3.0
     train[4,3] = 1.0
     train[4,2] = 1.0
-    test = sp.lil_matrix((5,5))
-    test[0,2] = 1.0 
-    test[0,0] = 3.0
-    test[1,1] = 2.0 
-    test[1,0] = 4.0
-    test[2,4] = 2.0 
-    test[2,2] = 2.0 
-    test[3,2] = 1.0 
-    test[3,4] = 3.0 
-    test[4,0] = 2.0
-    test[4,4] = 1.0 
     methods=['global','user','item','combined','no']
     fig, (ax00, ax01) = plt.subplots(1,2)
     ax00.set_title('train')
     ax00.matshow(train.todense())
-    ax00.axis('off')
-    ax01.set_title('test')
-    ax01.matshow(test.todense())
-    ax01.axis('off')
-    fig.savefig('../results/biases_test_train')
-    plt.matshow(scale)
-    plt.title('scale')
-    plt.tick_params(
+    ax01.set_title('scale')
+    ax01.matshow(scale)
+    ax01.tick_params(
         axis='y',          # changes apply to the x-axis
         which='both',      # both major and minor ticks are affected
         bottom='off',      # ticks along the bottom edge are off
         top='off',         # ticks along the top edge are off
         labelbottom='off') # labels along the bottom edge are off
-    plt.savefig('../results/biases_scale')
+    fig.savefig('../results/biases_train_scale')
 
     nz_train, nz_row_colindices, nz_col_rowindices = build_index_groups(train)
     user_means = get_user_means(train, nz_col_rowindices) 
@@ -109,11 +93,8 @@ if __name__=="__main__":
     rows,cols,ratings = sp.find(train)
     for m in methods:
         fig, (ax1, ax2, ax3, ax4) = plt.subplots(1,4)
-        train_normalized, train_mean = get_normalized_matrix(train.copy(),user_means,item_means,means,m)
-        print('error:',np.sqrt(compute_error2(train_mean,test,zip(rows,cols))))
-        #print('normalized',train_normalized.todense())
-        #print('mean',train_mean.todense())
-        #print('original',(train_normalized+train_mean).todense())
+        train_normalized, train_mean = get_unbiased_matrix(train.copy(),user_means,item_means,means,m)
+        print('error:',np.sqrt(compute_error2(train_mean,train,zip(rows,cols))))
         plt.title('test')
         ax1.set_title('biases')
         ax1.matshow(train_normalized.todense())
