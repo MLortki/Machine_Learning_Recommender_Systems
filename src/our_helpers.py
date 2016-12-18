@@ -20,9 +20,6 @@ def create_submission(path_output, ratings):
             valid_rating = round(valid_rating)
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
-            
-            
-
 
 def split_data(ratings, num_items_per_user, num_users_per_item,
                min_num_ratings, p_test=0.1, sparse= True):
@@ -111,6 +108,16 @@ def baseline_user_mean(train, test):
         num += 1
     return sum_mse/(num*2.0)
 
+def baseline_user_mean_find(train, test):
+    """baseline method: use the user means as the prediction."""
+    user_mean = (train!=0).mean(axis=0).reshape(-1,1)
+    print(user_mean.shape)
+    # sum over differences between actual values and global mean.
+    train_normalized = sp.lil_matrix(train.shape)
+    rows, cols,__  = sp.find(train)
+    train_normalized[rows,cols] = train[rows,cols] - user_mean[rows]
+    return train_normalized
+
 def baseline_item_mean(train, test):
     """baseline method: use item means as the prediction."""
     item_mean = (train!=0).mean(axis=1).reshape(-1,1)
@@ -156,32 +163,15 @@ def init_MF(train, num_features):
 
 def compute_error(data, user_features, item_features, nz):
     """compute the loss (MSE) of the prediction of nonzero elements."""
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # TODO
-    # calculate rmse (we only consider nonzero entries.)
-    # ***************************************************
     X = np.dot ( np.transpose(item_features), user_features )
-    
-    rmse = 0
-    counter = 0
-    for i, j in nz:
-        
-        rmse += (data[i,j] - X[i,j])**2
-        counter += 1
-    
-    rmse = rmse/(counter)
-    return rmse
+    return compute_error2(data, X, nz)
 
 def compute_error2(data, pred, nz):
-    
     rmse = 0
     counter = 0
     for i, j in nz:
-        
         rmse += (data[i,j] - pred[i,j])**2
         counter += 1
-    
     rmse = rmse/(counter)
     return rmse
 
