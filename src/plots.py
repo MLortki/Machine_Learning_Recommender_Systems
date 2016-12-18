@@ -81,9 +81,31 @@ def plot_cv_errors(errors, lambdas , K , path):
         lambda_str = ('%f' % lambdas[i]).rstrip('0').rstrip('.')
         plt.plot(range(len(data)), data, marker=next(markers),  label='lambda = %s'%lambda_str);
         
+    #plt.ylim(0.96 , 1)
     plt.title('ALS-WR Learning Curve,  K = %d'% K)
     plt.xlabel('Number of Epochs');
     plt.ylabel('RMSE');
+    plt.legend()
+    plt.grid()
+    plt.savefig("../results/"+path)
+    plt.show()
+    
+    
+def plot_general (errors, labels ,x_axis_name, y_axis_name, title, path):
+    
+        
+    colors = cycle(["aqua", "black", "blue", "fuchsia", "gray", "green", "lime", "maroon", "navy", "olive", "purple", "red", "silver", "teal", "yellow"])
+        
+    markers = cycle([ ".", ",", "o", "v" , "^" , ">", "1", "2", "3", "4", "8", "s", "p", "*", "h"])
+    
+    
+    for i, data in enumerate(errors):
+        
+        plt.plot(range(len(data)), data, marker=next(markers),  label=labels[i]);
+        
+    plt.title(title)
+    plt.xlabel(x_axis_name);
+    plt.ylabel(y_axis_name);
     plt.legend()
     plt.grid()
     plt.savefig("../results/"+path)

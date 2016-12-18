@@ -9,7 +9,7 @@ import sklearn.model_selection as skm
 
 def create_submission(path_output, ratings):
     path_sample = "../data/sampleSubmission.csv"
-    ratings_nonzero  = load_data(path_sample)
+    ratings_nonzero , ratings_data = load_data(path_sample)
     (rows, cols, data) = sp.find(ratings_nonzero)
     fieldnames = ['Id', 'Prediction']
     with open(path_output, "w") as f:
@@ -22,7 +22,7 @@ def create_submission(path_output, ratings):
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
 
 def split_data(ratings, num_items_per_user, num_users_per_item,
-               min_num_ratings, p_test=0.1):
+               min_num_ratings, p_test=0.1, sparse= True):
     """split the ratings to training data and test data.
     Args:
         min_num_ratings:
@@ -42,12 +42,20 @@ def split_data(ratings, num_items_per_user, num_users_per_item,
 
     # this is supposedly the fastest way of doing this.
     cx = sp.coo_matrix(valid_ratings)
-    test = sp.lil_matrix(ratings.shape)
-    train = sp.lil_matrix(ratings.shape)
+    stest = sp.lil_matrix(ratings.shape)
+    if sparse:
+        test = sp.lil_matrix(ratings.shape)
+        train = sp.lil_matrix(ratings.shape)
+    else:
+        
+        test = np.empty(ratings.shape)
+        train = np.empty(ratings.shape)
+        
     for i,j,v in zip(cx.row, cx.col, cx.data):
         # put the element with probability 0.1 in test set.
         if (np.random.uniform()<p_test):
             test[i,j] = v
+            stest[i,j] = v
         # put the element with probability 0.9 in train set.
         else:
             train[i,j] = v
@@ -59,10 +67,11 @@ def split_data(ratings, num_items_per_user, num_users_per_item,
     #  print("Total number of nonzero elements in train data:{v}".format(v=train.nnz))
     #  print("Test shape:{s}, num:{n}".format(s=test.shape, n=test.shape[0]*test.shape[1]))
     #  print("Total number of nonzero elements in test data:{v}".format(v=test.nnz))
-    print("Percentage of nz train data: % 2.4f, percentage of nz test data: % \
-            2.4f" % (train.nnz/valid_ratings.nnz, test.nnz/valid_ratings.nnz))
-    assert (train.nnz + test.nnz) == valid_ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
-    return valid_ratings, train, test
+    if sparse:
+        print("Percentage of nz train data: % 2.4f, percentage of nz test data: % \
+                2.4f" % (train.nnz/valid_ratings.nnz, test.nnz/valid_ratings.nnz))
+        assert (train.nnz + test.nnz) == valid_ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
+    return valid_ratings, train, test, stest
 
 def baseline_global_mean(train, test):
     """baseline method: use the global mean."""
@@ -281,10 +290,9 @@ def ALS (train ,test, num_features,lambda_, stop_criterion,rng = None):
         #i +=1
      
             
-        if i > 0 and rmse_te > rmses_te[len(rmses_te)-1]:
-            break
-            
-        if i > 0 and rmses_te[-1] - rmse_te < stop_criterion:
+        if i > 0 and rmse_te > rmses_te[len(rmses_te)-1] or i > 0 and rmses_te[-1] - rmse_te < stop_criterion:
+            rmses_tr.append(rmse_tr)
+            rmses_te.append(rmse_te)
             break
         
         rmses_tr.append(rmse_tr)
@@ -348,7 +356,7 @@ def gen_train_test(ratings, nz_ratings, i_ind , j_ind):
 
 def cross_validation(
     ratings, n_of_splits,num_features,lambdas,
-    stop_criterion):
+    stop_criterion, check_nb):
 
    
     #cross_validation(n_splits)
@@ -387,9 +395,12 @@ def cross_validation(
             
         print("lambda  = ",lambda_)
 
+        cnt = 1
+        
         for i, j in kf.split(t):
             
-            
+            if cnt > check_nb:
+                break
             
             #print("train: ",i.shape)
             #print("test: ",j.shape)
@@ -401,13 +412,17 @@ def cross_validation(
             itf, usf, rmses_tr, rmses_te = ALS (train , test, num_features,lambda_, 
                                                stop_criterion )
                 
-            avg_train += rmses_tr[-1]
-            avg_test += rmses_te[-1]
+            avg_train += rmses_tr[-2]
+            avg_test += rmses_te[-2]
+           
+            
+             
+            cnt += 1
                     
                 
                 
-        avg_train /= n_of_splits
-        avg_test /= n_of_splits
+        avg_train /= min(n_of_splits, check_nb)
+        avg_test /= min(n_of_splits, check_nb)
         print("average train error = ",avg_train)
         print("average test error = ",avg_test)
         test_avg_cost[ind] = avg_test
