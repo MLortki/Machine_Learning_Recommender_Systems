@@ -1,7 +1,15 @@
 \section{Models and Methods}
 
-\subsection{Data analysis}
-Include statistics about data 
+\subsection{Preprocessing}
+\subsubsection{Data analysis}
+
+The data provided is of the form 
+\begin{equation}
+  \fat{X} = (x_{nd}),
+\end{equation}
+where $x_{nd}$ corresponds to the rating of user $d$ for movie $n$.  
+the ratings are discrete and go from 1 to 5. Since every user only rates a
+very small subset of movies, the matrix is sparse.
 
 \begin{itemize}
   \item ratio of non-zero entries
@@ -9,8 +17,45 @@ Include statistics about data
   \item by how many users is each item rated on average? 
 \end{itemize}
 
+\subsubsection{Preprocessing}
 
-\subsection{Machine Learning methods}
+Since users and movies can vary a lot in terms of their average ratings, i.e. some
+users might give generally give more positive ratings than others and some
+movies might be more negative than others, there might be some implicit bias in
+the data provided. 
+This biais was removed as follows by subtracting a correcting term from each
+element,
+\begin{align}
+  \widetilde{x}_{nd} &= x_{nd}-\mu_{nd} \\
+  \mu_{nd} &=
+ \begin{cases}
+  \mu_{n} = \inv{|R(n)|} \sum_{d \in R(n)} x_{nd}, &\text{for item bias only}   \\
+\mu_{d} = \inv{|R(d)|} \sum_{n \in R(d)} x_{nd}, &\text{for user bias only} \\
+\mu = \inv{|R(n,d)|}\sum_{n,d \in R(n,d)} x_{nd}, &\text{for global bias only}
+   \\
+  \mu_{n} + \mu_{d} - \mu &\text{for combined biais} 
+ \end{cases}
+\end{align}
+
+The entries of the residual matrix, $\widetilde{x}_{nd}$ are then factorized as explained
+in \ref{sec:methods} and the bias is added again for the final predictions.
+TODO: insert the simple matrix visualization for this.
+As expected, the combined bias with underlying assumption that each rating can
+  be composed of a contribution by the user and one by the item, is the most
+  accurate model. (TODO: insert super pretty plot of errors by Manana here) 
+  TODO: insert Yahoo reference and/or Berkeley lecture notes. 
+
+\subsection{Machine learning methods}
+\label{sec:methods}
+
+The goal is to factorize the given ratings matrix using two low-rank matrices, 
+\begin{equation}
+  \fat{X} = \fat{W}\fat{Z}^T \with \fat{W} \inR{N \times K},
+  \fat{Z} \inR{D \times K}, 
+\end{equation}
+where $K$ is the number of latent features, and \fat{Z} and \fat{W} are in the following
+referred to as the user and feature matrix respectively.
+
 Find more about these methods in \cite{Aberger2009}
 \subsubsection{Stochastic Gradient Descent}
 \subsubsection{Bias Stochastic Gradient Descent}
@@ -21,7 +66,7 @@ Find more about these methods in \cite{Aberger2009}
 \begin{enumerate}
   \item \textbf{Cross valdiation} A 10-fold cross validation is implemented
     for the whole training dataset to fix the hyperparameters. 
-    TODO: what K should we choose to ensure enough valid users in dataset?   
+
   \item \textbf{Performance prediction} The training data was split into two
     sets of ratio 1:2, emulating the actual data ratio between Kaggle's training
     and test set. Doing the matrix factorization with this training/test set
@@ -29,3 +74,4 @@ Find more about these methods in \cite{Aberger2009}
     kaggle dataset.  
     TODO: what is this ratio for this dataset? 
 \end{enumerate}
+

@@ -13,8 +13,8 @@
 
 % make common math commands shorter.
 \newcommand{\argmin}[1]{\underset{#1}{\operatorname{arg}\,\operatorname{min}}\;}
-\newcommand{\summ}[2]{\ensuremath{\sum_{#1 = 1}^{\g{#2}}}}
-\newcommand{\summz}[2]{\ensuremath{\sum_{#1 = 0}^{\g{#2}}}}
+\newcommand{\summ}[2]{\ensuremath{\sum_{#1 = 1}^{#2}}}
+\newcommand{\summz}[2]{\ensuremath{\sum_{#1 = 0}^{#2}}}
 \newcommand{\inR}[1]{\ensuremath{\in\mathbb{R}^{#1}}}
 \newcommand{\rowvector}[1]{\ensuremath{\begin{bmatrix} #1 \end{bmatrix}}}
 \renewcommand{\exp}{\text{exp}}
@@ -23,3 +23,6 @@
 \newcommand{\pdderiv}[2]{\ensuremath{\frac{\partial^2 #1}{\partial #2 ^2}}}
 \newcommand{\pddderiv}[3]{\ensuremath{\frac{\partial^2 #1}{\partial #2 \partial
 #3}}}
+\newcommand{\with}{,\hspace{2em} \text{with} \hspace{1em}}
+\newcommand{\fat}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\inv}[1]{\ensuremath{\frac{1}{#1}}}
