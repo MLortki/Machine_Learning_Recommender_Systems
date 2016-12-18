@@ -166,7 +166,7 @@ def compute_error(data, user_features, item_features, nz):
     X = np.dot ( np.transpose(item_features), user_features )
     return compute_error2(data, X, nz)
 
-def compute_error2(data, pred, nz):
+def compute_error2_slow(data, pred, nz):
     rmse = 0
     counter = 0
     for i, j in nz:
@@ -174,6 +174,12 @@ def compute_error2(data, pred, nz):
         counter += 1
     rmse = rmse/(counter)
     return rmse
+
+def compute_error2(data, pred, nz):
+    rows,cols,actual = sp.find(data)
+    predictions = pred[rows,cols]
+    sum_err = np.sum(np.power(actual-predictions,2))
+    return sum_err/predictions.shape[1]
 
 def update_user_feature(
         train, item_features, lambda_user,
@@ -501,3 +507,14 @@ def main(ratings):
     
     return ratings_full, train_errors, test_errors
 
+if __name__=="__main__":
+    setup = '''
+from __main__ import compute_error2, compute_error2_slow
+from helpers import load_data
+import scipy.sparse as sp
+path_dataset = '../data/data_train.csv'
+ratings = load_data(path_dataset)
+rows, cols, r = sp.find(ratings)
+'''
+    from timeit import Timer
+    print(min(Timer('compute_error2(ratings,ratings,zip(rows,cols))',setup=setup).repeat(1,3)))

@@ -19,7 +19,7 @@ def get_global_means(train, nz_train):
     rows, cols, ratings = sp.find(train)
     mean = np.mean(ratings)
     means[rows,cols] = mean
-    return means
+    return means, mean
 
 def get_unbiased_matrix(train, user_means, item_means, means, m):
     """ 
@@ -32,12 +32,12 @@ def get_unbiased_matrix(train, user_means, item_means, means, m):
     if m=='no':
         print('no method ok')
         return train, sp.lil_matrix(train.shape)
-    if m=='global':
+    elif m=='global':
         train_normalized[rows,cols] = train[rows,cols] - means[rows,cols]
         train_means[rows,cols] = means[rows,cols]
         assert train_normalized.mean() < 1e-14
         print('global ok')
-    if m=='item':
+    elif m=='item':
             #train_normalized[i,colindices] = train[i,colindices]-item_means[i,0]
             #train_means[i,colindices] = item_means[i,0]
         train_means[rows,cols] = item_means[rows].T
@@ -49,11 +49,28 @@ def get_unbiased_matrix(train, user_means, item_means, means, m):
         train_normalized[rows,cols] = train[rows,cols] - user_means[cols].T
         assert np.mean(train_normalized.mean(axis=0)) < 1e-14
         print('user ok')
-    if m=='combined':
+    elif m=='combined':
         train_means[rows,cols] = user_means[cols].T + item_means[rows].T - means[rows,cols]
         train_normalized[rows,cols] = train[rows,cols] - train_means[rows,cols]
         print('combined ok')
     return train_normalized, train_means
+
+def get_predictions(ratings, user_means, item_means, mean, m):
+    predictions = np.empty(ratings.shape)
+    item_matrix = np.tile(item_means, (1,predictions.shape[1]))
+    user_matrix = np.tile(user_means.T, (predictions.shape[0],1))
+    print(user_matrix.shape)
+    print(item_matrix.shape)
+    means_matrix = np.ones(ratings.shape)*mean
+    if m=='combined':
+        predictions = ratings + item_matrix + user_matrix - means_matrix
+    elif m=='item':
+        predictions = ratings + item_matrix 
+    elif m=='user':
+        predictions = ratings + user_matrix
+    elif m=='global':
+        predictions = ratings + mean
+    return predictions
 
 if __name__=="__main__":
     scale = np.arange(0,6)
