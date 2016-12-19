@@ -9,7 +9,7 @@ import sklearn.model_selection as skm
 
 def create_submission(path_output, ratings):
     path_sample = "../data/sampleSubmission.csv"
-    ratings_nonzero , ratings_data = load_data(path_sample)
+    ratings_nonzero  = load_data(path_sample)
     (rows, cols, data) = sp.find(ratings_nonzero)
     fieldnames = ['Id', 'Prediction']
     with open(path_output, "w") as f:
@@ -17,7 +17,7 @@ def create_submission(path_output, ratings):
         writer.writeheader()
         for i,row in enumerate(rows):
             valid_rating = min(max(ratings[row,cols[i]],1),5)
-            valid_rating = round(valid_rating)
+            valid_rating = valid_rating
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
 
@@ -164,7 +164,7 @@ def init_MF(train, num_features):
 def compute_error(data, user_features, item_features, nz):
     """compute the loss (MSE) of the prediction of nonzero elements."""
     X = np.dot ( np.transpose(item_features), user_features )
-    return compute_error2(data, X, nz)
+    return compute_error2_slow(data, X, nz)
 
 def compute_error2_slow(data, pred, nz):
     rmse = 0
