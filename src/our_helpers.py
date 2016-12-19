@@ -17,9 +17,18 @@ def create_submission(path_output, ratings):
         writer.writeheader()
         for i,row in enumerate(rows):
             valid_rating = min(max(ratings[row,cols[i]],1),5)
-            valid_rating = valid_rating
+            
+            #ind = abs(pred - np.around(pred)) <= 0.1
+            #pred[ ind ] = np.around(pred[ ind ])
+            
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
+            
+            
+def write_predictions(path_output, ratings):
+    
+    np.save(path_output, ratings)
+    
 
 def split_data(ratings, num_items_per_user, num_users_per_item,
                min_num_ratings, p_test=0.1, sparse= True):
@@ -296,7 +305,8 @@ def ALS (train ,test, num_features,lambda_, stop_criterion,rng = None):
         #i +=1
      
             
-        if i > 0 and rmse_te > rmses_te[len(rmses_te)-1] or i > 0 and rmses_te[-1] - rmse_te < stop_criterion:
+        #if   i > 0 and abs(rmses_tr[-1] - rmse_tr) < stop_criterion : #or i > 0 and rmse_te > rmses_te[len(rmses_te)-1] :
+        if   i > 0 and abs(rmses_te[-1] - rmse_te) < stop_criterion or i > 0 and rmse_te > rmses_te[-1] :
             rmses_tr.append(rmse_tr)
             rmses_te.append(rmse_te)
             break
