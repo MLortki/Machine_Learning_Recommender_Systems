@@ -16,14 +16,23 @@ where $K$ is the number of latent features, and \fat{Z} and \fat{W} are in the f
 referred to as the user and feature matrix respectively.
 
 Find more about these methods in \cite{Aberger2009}
+
+\subsubsection{Bias Stochastic Gradient Descent}
+
 \input{chapters/methods-sgd}
+
 \subsubsection{Alternating Least Squares}
 
-Regularization added from \cite{Zhou2008}
+
+\subsection{Blending}
+
+\input{chapters/methods-blending}
 
 \subsection{Evaluation}
 
 \begin{enumerate}
+  TODO: write about why kaggle results tend to be different than lcoal data for
+    SGD, but not for ALS.
   \item \textbf{Cross valdiation} A 10-fold cross validation is implemented
     for the whole training dataset to fix the hyperparameters. 
 

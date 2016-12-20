@@ -9,11 +9,13 @@ def get_user_means(train, nz_col_rowindices):
     for j, rowindices in nz_col_rowindices:
         user_means[j,0] = np.mean(train[rowindices,j])
     return user_means
+
 def get_item_means(train, nz_row_colindices):
     item_means = np.zeros((train.shape[0],1))
     for i, colindices in nz_row_colindices:
         item_means[i,0] = np.mean(train[i,colindices])
     return item_means
+
 def get_global_means(train, nz_train):
     means = sp.lil_matrix(train.shape)
     rows, cols, ratings = sp.find(train)

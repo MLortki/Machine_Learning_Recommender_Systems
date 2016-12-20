@@ -1,0 +1,22 @@
+It has been shown that if one disposes of several well performing methods,
+a clever combination of the methods can improve the accuracy of predictions.   
+A combination can overcome problems when the used algorithms are prone to
+converge to local optima, or full convergence is too computationally expensive.
+\cite{Dietterich}
+A combination of multiple algorithms can be particularly beneficial when some
+are shown to perform better in certain regions of the features space than
+others, giving each method a higher weight in the regions where it performs
+best.
+
+The splitting of the dataset is done as suggested in
+\cite{PresentationGrandPrize}: each method is trained on a fixed subset of 95\% of the
+dataset (training set), while the remaining 5\% are split up equally, and one half is used to
+compare the different methods (probe set) and finally the other half is used to create a
+valuable prediction of the performance of the final, blended method (validation
+set).  
+This splitting ensures at least 30'000 non-zero entries in the smallest sets
+($\N_{probe}$),
+which was considered enough for the evaluation, and removes only a small
+proportion of the valuable training data.
+
+Blending is great because...
