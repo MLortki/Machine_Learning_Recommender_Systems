@@ -1,11 +1,12 @@
 # coding: utf-8
 import numpy as np
 import scipy.sparse as sp
+import plots as pl
+import sklearn.model_selection as skm
+import pandas as pd
 import csv
 from helpers import calculate_mse, load_data
 from helpers import build_index_groups
-import plots as pl
-import sklearn.model_selection as skm
 
 def create_submission(path_output, ratings):
     path_sample = "../data/sampleSubmission.csv"
@@ -138,7 +139,7 @@ def baseline_combined(train, test):
     return sum_mse/(num*2.0)
 
 def create_dataset_blending(path='../data/data_train.csv'):
-    ratings = load_data(file_train)
+    ratings = load_data(path)
     __, train, test = split_data(ratings,0.05)
     __, test_test, test_validation = split_data(test, 0.5)
     file_blending_train = '../data/blending_train.csv'
@@ -147,16 +148,16 @@ def create_dataset_blending(path='../data/data_train.csv'):
     write_predictions_csv(file_blending_test, test_test)
     write_predictions_csv(file_blending_validation, test_validation)
     write_predictions_csv(file_blending_train, train)
-    print('number of non-zero elements for train(95%):{}, validation(2.5%):{},
+    print('number of non-zero elements for train(95%):{}, validation(2.5%):{}, \
             test(2.5%):{}'.format(train.nnz, test_validation.nnz,test_test.nnz))
 
-def create_dataset_surprise(path'../data/data_train.csv'):
+def create_dataset_surprise(path='../data/data_train.csv',output_path = \
+        '../data/data_train_surprise.csv'):
     ratings = load_data(path)
     rows, cols, ratings = sp.find(ratings)
     rows = rows + 1
     cols = cols + 1
     test_pd = pd.DataFrame({'item':rows,'user':cols,'rating':ratings})
-    output_path = '../data/data_train_surprise.csv'
     test_pd.to_csv(output_path,index=False)
 
 
