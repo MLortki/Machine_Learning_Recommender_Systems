@@ -1,0 +1,68 @@
+\subsubsection{Data analysis}
+
+The data provided is of the form 
+\begin{equation}
+  \fat{X} = (x_{nd}),
+\end{equation}
+where $x_{nd}$ corresponds to the rating of user $d$ for movie $n$.  
+the ratings are discrete and go from 1 to 5. Since every user only rates a
+very small subset of movies, the matrix is sparse. The data has the following
+characteristics.
+
+\begin{itemize}
+  \item The trainig set provided has 991561 non-zero entries, which corresponds to 
+a fraction of $f_{train} \approx 0.1$ with respect to the number of unknowns($N \times $D). 
+  \item Each user in the dataset has rated at least 8 movies, the maximum
+    ratings per user is 4590. On average, a user rates roughly 1177 movies.
+  \item Each movie in the dataset is rated by at least 3 users, and the maximum
+    of ratings per movie is 522. On average, each move is rated by around 118
+    users. 
+\end{itemize}
+
+\subsubsection{Bias correction}
+\label{sec:biascorrection}
+
+Since users and movies can vary a lot in terms of their average ratings, i.e. some
+users might give generally give more positive ratings than others and some
+movies might be more negative than others, there might be some implicit bias in
+the data provided. 
+This biais was removed as follows by subtracting a correcting term from each
+element,
+\begin{align}
+  \widetilde{x}_{nd} &= x_{nd}-\mu_{nd} \\
+  \mu_{nd} &=
+ \begin{cases}
+  \mu_{n} = \inv{|R(n)|} \sum_{d \in R(n)} x_{nd}, &\text{for item bias only}   \\
+\mu_{d} = \inv{|R(d)|} \sum_{n \in R(d)} x_{nd}, &\text{for user bias only} \\
+\mu = \inv{|R(n,d)|}\sum_{n,d \in R(n,d)} x_{nd}, &\text{for global bias only}
+   \\
+  \mu_{n} + \mu_{d} - \mu &\text{for combined biais}
+ \end{cases}, 
+\end{align}
+where the last term corresponds to what is used in \cite{Koren2009}. 
+The entries of the residual matrix, $\widetilde{x}_{nd}$ are then factorized as explained
+in \ref{sec:methods} and the bias is added again for the final predictions.
+\ref{fig:matrix}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\columnwidth]{figures/biases_user.png}
+  \vspace{-3mm}
+  \caption{A simple example for bias correction. The bias matrix is obtained by
+  substracting the mean of the corresponding user. The matrix composed of these
+  means and the biases sum up to the original training matrix as expected.}
+  \label{fig:matrix}
+\end{figure}
+
+As expected, the combined bias with underlying assumption that each rating can
+  be composed of a contribution by the user and one by the item, is the most
+  accurate model \ref{fig:bias} 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\columnwidth]{figures/bias.jpg}
+  \vspace{-3mm}
+  \caption{Performance of ALS algorithm using different variants of bias
+  correction. TODO: what are the parameters used for this? }
+  \label{fig:bias}
+\end{figure}

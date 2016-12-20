@@ -24,19 +24,26 @@ def create_submission(path_output, ratings):
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
             
-            
 def write_predictions(path_output, ratings):
-    
     np.save(path_output, ratings)
-    
 
-def split_data(ratings, num_items_per_user, num_users_per_item,
-               min_num_ratings, p_test=0.1, sparse= True):
-    """split the ratings to training data and test data.
-    Args:
-        min_num_ratings:
-            all users and items we keep must have at least min_num_ratings per user and per item.
+def write_predictions_csv(path_output, ratings):
+    (rows, cols, data) = sp.find(ratings)
+    fieldnames = ['Id', 'Prediction']
+    with open(path_output, "w") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for i,row in enumerate(rows):
+            _id = "r{0}_c{1}".format(row+1,cols[i]+1)
+            writer.writerow({'Id': _id, 'Prediction': data[i]})
+    print('Saved predictions at',path_output) 
+    
+def split_data(ratings,  p_test=0.1, sparse= True):
     """
+    split the ratings to training data and test data.
+    """
+    min_num_ratings = 10
+    num_items_per_user, num_users_per_item = pl.plot_raw_data(ratings, False)
     # set seed
     np.random.seed(988)
 
@@ -51,12 +58,10 @@ def split_data(ratings, num_items_per_user, num_users_per_item,
 
     # this is supposedly the fastest way of doing this.
     cx = sp.coo_matrix(valid_ratings)
-    stest = sp.lil_matrix(ratings.shape)
     if sparse:
         test = sp.lil_matrix(ratings.shape)
         train = sp.lil_matrix(ratings.shape)
     else:
-        
         test = np.empty(ratings.shape)
         train = np.empty(ratings.shape)
         
@@ -64,23 +69,17 @@ def split_data(ratings, num_items_per_user, num_users_per_item,
         # put the element with probability 0.1 in test set.
         if (np.random.uniform()<p_test):
             test[i,j] = v
-            stest[i,j] = v
         # put the element with probability 0.9 in train set.
         else:
             train[i,j] = v
 
     (rows, cols, datas) = sp.find(valid_ratings)
 
-    #  print("Total number of nonzero elements in origial data:{v}".format(v=ratings.nnz))
-    #  print("Train shape:{s}, num:{n}".format(s=train.shape, n=train.shape[0]*train.shape[1]))
-    #  print("Total number of nonzero elements in train data:{v}".format(v=train.nnz))
-    #  print("Test shape:{s}, num:{n}".format(s=test.shape, n=test.shape[0]*test.shape[1]))
-    #  print("Total number of nonzero elements in test data:{v}".format(v=test.nnz))
     if sparse:
         print("Percentage of nz train data: % 2.4f, percentage of nz test data: % \
                 2.4f" % (train.nnz/valid_ratings.nnz, test.nnz/valid_ratings.nnz))
         assert (train.nnz + test.nnz) == valid_ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
-    return valid_ratings, train, test, stest
+    return valid_ratings, train, test
 
 def baseline_global_mean(train, test):
     """baseline method: use the global mean."""
