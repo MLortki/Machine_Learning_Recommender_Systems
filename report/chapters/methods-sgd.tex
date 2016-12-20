@@ -1,0 +1,15 @@
+\subsubsection{Bias Stochastic Gradient Descent}
+
+The stochastic gradient descent (SGD) algorithm used in this report was provided by the
+\textit{Surprise} library
+\footnote{\href{}{https://github.com/NicolasHug/Surprise}} by Nicolas Hug.  
+It is based on the algorithm provided by  
+Simon Funk \footnote{\href{}{http://sifter.org/~simon/journal/20061211.html}}, 
+which uses bias correction as described in \cite{Koren2009}. 
+Without this bias correction, it reduces to the algorithm given in \cite{Salak2008}. 
+
+As shown in \ref{sec:biascorrection}, we expect better predictions when removing
+the user and item biases, so we choose to use this correction and we choose the
+other hyperparameters using cross-validation.
+
+
