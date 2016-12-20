@@ -23,9 +23,6 @@ def init_MF(train, num_features):
     
     return user_features, item_features
 
-
-
-
 def update_user_feature(
         train, item_features, lambda_user, nnz_items_per_user):   
     """update user feature matrix.
@@ -60,9 +57,6 @@ def update_user_feature(
             np.dot( Wt, X)).flatten()
       
     return user_features
-
-
-
 
 def update_item_feature(
         train, user_features, lambda_item, nnz_users_per_item):  
@@ -99,9 +93,6 @@ def update_item_feature(
         
     
     return item_features
-
-
-
 
 def ALS_WR(train ,test, num_features,lambda_, stop_criterion,rng = None):
     """Alternating least squares with weighted regularization

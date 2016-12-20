@@ -37,12 +37,12 @@ def write_predictions_csv(path_output, ratings):
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': data[i]})
     print('Saved predictions at',path_output) 
-    
+
 def split_data(ratings,  p_test=0.1, sparse= True):
     """
     split the ratings to training data and test data.
     """
-    min_num_ratings = 10
+    min_num_ratings = 0
     num_items_per_user, num_users_per_item = pl.plot_raw_data(ratings, False)
     # set seed
     np.random.seed(988)
@@ -94,15 +94,6 @@ def baseline_global_mean(train, test):
         num += 1
     return sum_mse/(num*2.0)
 
-# TODO: Aida's version only working for dense matrices?
-def baseline_global_mean_aida(train, test):
-    """baseline method: use the global mean."""
-    global_predict_train=(train!=0).mean()
-    num_test=np.count_nonzero(test)
-    test_real_values=test.ravel()[np.flatnonzero(test)]
-    test_mse=1/(2.0*num_test)*calculate_mse(test_real_values, np.full(num_test, global_predict_train))
-    return test_mse
-
 def baseline_user_mean(train, test):
     """baseline method: use the user means as the prediction."""
     user_mean = (train!=0).mean(axis=0).reshape(-1,1)
@@ -115,16 +106,6 @@ def baseline_user_mean(train, test):
         sum_mse += (v-user_mean[j,0])**2
         num += 1
     return sum_mse/(num*2.0)
-
-def baseline_user_mean_find(train, test):
-    """baseline method: use the user means as the prediction."""
-    user_mean = (train!=0).mean(axis=0).reshape(-1,1)
-    print(user_mean.shape)
-    # sum over differences between actual values and global mean.
-    train_normalized = sp.lil_matrix(train.shape)
-    rows, cols,__  = sp.find(train)
-    train_normalized[rows,cols] = train[rows,cols] - user_mean[rows]
-    return train_normalized
 
 def baseline_item_mean(train, test):
     """baseline method: use item means as the prediction."""
@@ -156,9 +137,27 @@ def baseline_combined(train, test):
         num += 1
     return sum_mse/(num*2.0)
 
+def create_dataset_blending(path='../data/data_train.csv'):
+    ratings = load_data(file_train)
+    __, train, test = split_data(ratings,0.05)
+    __, test_test, test_validation = split_data(test, 0.5)
+    file_blending_train = '../data/blending_train.csv'
+    file_blending_test = '../data/blending_test.csv'
+    file_blending_validation = '../data/blending_validation.csv'
+    write_predictions_csv(file_blending_test, test_test)
+    write_predictions_csv(file_blending_validation, test_validation)
+    write_predictions_csv(file_blending_train, train)
+    print('number of non-zero elements for train(95%):{}, validation(2.5%):{},
+            test(2.5%):{}'.format(train.nnz, test_validation.nnz,test_test.nnz))
 
-
-
+def create_dataset_surprise(path'../data/data_train.csv'):
+    ratings = load_data(path)
+    rows, cols, ratings = sp.find(ratings)
+    rows = rows + 1
+    cols = cols + 1
+    test_pd = pd.DataFrame({'item':rows,'user':cols,'rating':ratings})
+    output_path = '../data/data_train_surprise.csv'
+    test_pd.to_csv(output_path,index=False)
 
 
 if __name__=="__main__":
