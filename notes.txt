@@ -1,0 +1,11 @@
+Submissions:
+
+train (2-fold): rmse on test data 1.0002
+n_factors = 12 # The number of factors. Default is 100.
+n_epochs  = 20 # The number of iteration of the SGD procedure. Default is 20.
+biased    = True # Whether to use baselines (or biases). See note above. Default
+is True.
+lr_all = 0.005 # The learning rate for all parameters. Default is 0.005.
+reg_all   = 0.0359 # The r
+
+kaggle score: 0.99256
