@@ -135,23 +135,32 @@ def get_predictions(ratings, user_means, item_means, mean, m):
        output:  predictions           -predictions with biases 
     """
     
+    #initialization
     predictions = np.empty(ratings.shape)
     item_matrix = np.tile(item_means, (1,predictions.shape[1]))
-    user_matrix = np.tile(user_means.T, (predictions.shape[0],1))
-    print(user_matrix.shape)
-    print(item_matrix.shape)
+    user_matrix = np.tile(user_means.T, (predictions.shape[0],1))   
     means_matrix = np.ones(ratings.shape)*mean
+    
+    #adding back combined bias
     if m=='combined':
         predictions = ratings + item_matrix + user_matrix - means_matrix
+        
+    #adding back item bias
     elif m=='item':
         predictions = ratings + item_matrix 
+        
+    #adding back user bias
     elif m=='user':
         predictions = ratings + user_matrix
+        
+    #adding back global bias
     elif m=='global':
         predictions = ratings + mean
+        
     return predictions
 
 if __name__=="__main__":
+    
     scale = np.arange(0,6)
     scale = np.vstack((scale,scale))
 
