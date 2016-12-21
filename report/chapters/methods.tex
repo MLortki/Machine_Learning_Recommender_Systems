@@ -7,6 +7,31 @@
 \subsection{Machine learning methods}
 \label{sec:methods}
 
+\subsubsection{Library Review}
+
+The surprise library was chosen
+for its high performance thanks to customizability, great ease of startup
+ (installation \& system requriements), ease of use and big variety of
+ implemented algorithms for recommender systems.
+
+ TODO: insert links/references
+\begin{table}
+  \centering
+\begin{tabular}{|l|c|c|c|c|}
+  \hline
+   & startup & ease of use & performance & variety \\
+  \hline 
+  graphlab   & \two & \thr & \one & \two \\
+  pyspark     & \one & \one & \two & \thr \\
+  surprise    & \thr & \thr & \thr & \two \\
+  fancyinput  & \thr & \thr & \two & \one \\
+  \hline 
+\end{tabular}
+  \caption{Overview of libraries tested for recommender system implementation.
+  One star corresponds to lowest performance. }
+  \label{tab:libraries}
+\end{table}
+
 The goal is to factorize the given ratings matrix using two low-rank matrices, 
 \begin{equation}
   \fat{X} = \fat{W}\fat{Z}^T \with \fat{W} \inR{N \times K},
