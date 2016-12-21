@@ -81,7 +81,8 @@ def plot_cv_errors(errors, lambdas , K , path):
         lambda_str = ('%f' % lambdas[i]).rstrip('0').rstrip('.')
         plt.plot(range(len(data)), data, marker=next(markers),  label='lambda = %s'%lambda_str);
         
-    #plt.ylim(0.96 , 1)
+    plt.ylim(0.96 , 2)
+    plt.xlim(0 , 50)
     plt.title('ALS-WR Learning Curve,  K = %d'% K)
     plt.xlabel('Number of Epochs');
     plt.ylabel('RMSE');

@@ -1,3 +1,5 @@
+"""Alternating least squares with its helper functions"""
+
 import numpy as np
 import scipy.sparse as sp
 import sklearn.model_selection as skm
@@ -108,7 +110,7 @@ def cross_validation(
             
             train , test = gen_train_test(ratings, nz_ratings, i , j)
             itf, usf, rmses_tr, rmses_te = ALS_WR (train , test, num_features,lambda_, 
-                                               stop_criterion )
+                                               stop_criterion)
                 
             avg_train += rmses_tr[-2]
             avg_test += rmses_te[-2]
