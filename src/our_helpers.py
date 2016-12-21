@@ -1,4 +1,7 @@
 # coding: utf-8
+"""some helper functions."""
+
+
 import numpy as np
 import scipy.sparse as sp
 import plots as pl
@@ -8,20 +11,30 @@ import csv
 from helpers import calculate_mse, load_data
 from helpers import build_index_groups
 
+
 def create_submission(path_output, ratings):
+    """creating .csv submission.
+    
+       input:   path_output     -path for output
+                ratings         -prediction matrix (D x N)
+    """
+    
+    #path to the sample submission
     path_sample = "../data/sampleSubmission.csv"
+    
+    #estimating ratings for submission
     ratings_nonzero  = load_data(path_sample)
     (rows, cols, data) = sp.find(ratings_nonzero)
+    
+    #writing to file
     fieldnames = ['Id', 'Prediction']
     with open(path_output, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for i,row in enumerate(rows):
-            valid_rating = min(max(ratings[row,cols[i]],1),5)
-            
+            valid_rating = min(max(ratings[row,cols[i]],1),5) 
             #ind = abs(pred - np.around(pred)) <= 0.1
             #pred[ ind ] = np.around(pred[ ind ])
-            
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
             
@@ -82,61 +95,6 @@ def split_data(ratings,  p_test=0.1, sparse= True):
         assert (train.nnz + test.nnz) == valid_ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
     return valid_ratings, train, test
 
-def baseline_global_mean(train, test):
-    """baseline method: use the global mean."""
-    mean = (train!=0).mean()
-    # sum over differences between actual values and global mean.
-    sum_mse = 0
-    num = 0
-    # this is supposedly the fastest way of doing this.
-    cx = sp.coo_matrix(test)
-    for i,j,v in zip(cx.row, cx.col, cx.data):
-        sum_mse += (v-mean)**2
-        num += 1
-    return sum_mse/(num*2.0)
-
-def baseline_user_mean(train, test):
-    """baseline method: use the user means as the prediction."""
-    user_mean = (train!=0).mean(axis=0).reshape(-1,1)
-    # sum over differences between actual values and global mean.
-    sum_mse = 0
-    num = 0
-    # this is supposedly the fastest way of doing this.
-    cx = sp.coo_matrix(test)
-    for i,j,v in zip(cx.row, cx.col, cx.data):
-        sum_mse += (v-user_mean[j,0])**2
-        num += 1
-    return sum_mse/(num*2.0)
-
-def baseline_item_mean(train, test):
-    """baseline method: use item means as the prediction."""
-    item_mean = (train!=0).mean(axis=1).reshape(-1,1)
-    # sum over differences between actual values and global mean.
-    sum_mse = 0
-    num = 0
-    # this is supposedly the fastest way of doing this.
-    cx = sp.coo_matrix(test)
-    for i,j,v in zip(cx.row, cx.col, cx.data):
-        sum_mse += (v-item_mean[i,0])**2
-        num += 1
-    return sum_mse/(num*2.0)
-
-def baseline_combined(train, test):
-    mean = (train!=0).mean()
-    item_mean = (train!=0).mean(axis=1).reshape(-1,1)
-    user_mean = (train!=0).mean(axis=0).reshape(-1,1)
-
-    # this is supposedly the fastest way of doing this.
-    sum_mse = 0
-    num = 0
-    cx = sp.coo_matrix(test)
-    for i,j,v in zip(cx.row, cx.col, cx.data):
-        b_user = user_mean[j,0] - mean
-        b_item = item_mean[i,0] - mean
-        prediction = mean + b_user + b_item 
-        sum_mse += (v - prediction)**2
-        num += 1
-    return sum_mse/(num*2.0)
 
 def create_dataset_blending(path='../data/data_train.csv'):
     ratings = load_data(path)
