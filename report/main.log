@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2016.11.22)  21 DEC 2016 16:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2016.11.22)  21 DEC 2016 22:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -726,7 +726,17 @@ LaTeX Warning: Citation `Dietterich' on page 2 undefined on input line 5.
 LaTeX Warning: Citation `PresentationGrandPrize' on page 2 undefined on input l
 ine 12.
 
-)) (./main.bbl)
+
+LaTeX Warning: Citation `PresentationGrandPrize' on page 2 undefined on input l
+ine 23.
+
+<figures/blending2.png, id=86, 334.3692pt x 190.5519pt>
+File: figures/blending2.png Graphic file (type png)
+
+<use figures/blending2.png>
+Package pdftex.def Info: figures/blending2.png used on input line 47.
+(pdftex.def)             Requested size: 243.91125pt x 139.00285pt.
+) [2 <./figures/bias.jpg> <./figures/blending2.png>]) (./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -739,7 +749,9 @@ Before submitting the final camera ready copy, remember to:
  process uses the appropriate paper size.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 30.
-[2 <./figures/bias.jpg>]
+[3
+
+]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 30.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 30.
@@ -753,29 +765,31 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 30.
  ) 
 Here is how much of TeX's memory you used:
- 7065 strings out of 493013
- 101960 string characters out of 6139316
- 194725 words of memory out of 5000000
- 10468 multiletter control sequences out of 15000+600000
- 46672 words of font info for 100 fonts, out of 8000000 for 9000
+ 7078 strings out of 493013
+ 102158 string characters out of 6139316
+ 195198 words of memory out of 5000000
+ 10473 multiletter control sequences out of 15000+600000
+ 47779 words of font info for 101 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 31i,16n,28p,338b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 31i,16n,28p,595b,415s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></us
-r/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/sha
-re/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/typ
-e1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
-b>
-Output written on main.pdf (2 pages, 222249 bytes).
+cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></us
+r/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><
+/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmsy9.pfb></usr/share/texmf-dist/fonts/type1/public/ams
+fonts/symbols/msbm10.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pf
+b></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dis
+t/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (3 pages, 279999 bytes).
 PDF statistics:
- 153 PDF objects out of 1000 (max. 8388607)
- 131 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
- 99 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 178 PDF objects out of 1000 (max. 8388607)
+ 150 compressed objects within 2 object streams
+ 36 named destinations out of 1000 (max. 500000)
+ 104 words of extra memory for PDF output out of 10000 (max. 10000000)
 
