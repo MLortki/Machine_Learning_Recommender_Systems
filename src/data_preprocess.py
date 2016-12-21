@@ -1,5 +1,4 @@
 from helpers import build_index_groups
-from our_helpers import compute_error2
 import numpy as np
 import scipy.sparse as sp
 import matplotlib.pyplot as plt
