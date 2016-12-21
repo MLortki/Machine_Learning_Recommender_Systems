@@ -47,7 +47,7 @@ def apply_indices(sparse_matrices, dataset='train'):
         file = '../data/sampleSubmission.csv'
     indices_matrix = load_data(file)
     rows, cols, __ = sp.find(indices_matrix)
-    print('number of rows, cols:',len(rows), len(cols))
+    print('number of rows, cols:',len(cols))
     indices = list(zip(rows, cols))
     
     sparse_matrices_reduced = []
