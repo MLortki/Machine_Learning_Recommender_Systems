@@ -54,6 +54,7 @@ def plot_train_test_data(train, test):
     plt.savefig("../results/train_test")
     plt.show()
     
+    
 def plot_train_test_errors(train_errors, test_errors, lambda_str , K , path, rng):
 
     
@@ -69,8 +70,7 @@ def plot_train_test_errors(train_errors, test_errors, lambda_str , K , path, rng
     
     
 def plot_cv_errors(errors, lambdas , K , path):
-    
-        
+            
     colors = cycle(["aqua", "black", "blue", "fuchsia", "gray", "green", "lime", "maroon", "navy", "olive", "purple", "red", "silver", "teal", "yellow"])
         
     markers = cycle([ ".", ",", "o", "v" , "^" , ">", "1", "2", "3", "4", "8", "s", "p", "*", "h"])
@@ -92,9 +92,8 @@ def plot_cv_errors(errors, lambdas , K , path):
     plt.show()
     
     
-def plot_general (errors, labels ,x_axis_name, y_axis_name, title, path):
-    
-        
+def plot_general (errors, labels , x_axis_name, y_axis_name, title, path):
+            
     colors = cycle(["aqua", "black", "blue", "fuchsia", "gray", "green", "lime", "maroon", "navy", "olive", "purple", "red", "silver", "teal", "yellow"])
         
     markers = cycle([ ".", ",", "o", "v" , "^" , ">", "1", "2", "3", "4", "8", "s", "p", "*", "h"])
