@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.sparse as sp
@@ -36,3 +37,7 @@ def create_sparse_matrix_plot(sparse_matrix, fname='',cutoff=1000, title=''):
     print('user min, max, mean:',np.min(i_total), np.max(i_total), np.mean(i_total))
     return i_total, ratings_dense[:i_max,:]
 
+=======
+            #ind = abs(pred - np.around(pred)) <= 0.1
+            #pred[ ind ] = np.around(pred[ ind ])
+>>>>>>> 9baa9598621225e5db621b947c90bbdef027f458
