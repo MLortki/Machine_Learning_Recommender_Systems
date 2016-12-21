@@ -90,8 +90,7 @@ def update_item_feature(
         item_features[:, g] = np.linalg.solve( 
             np.dot(Zt, np.transpose(Zt))+ lambda_item * value.shape[0]* np.eye(K)  ,
             np.dot( Zt, np.transpose(X))).flatten()
-        
-    
+           
     return item_features
 
 def ALS_WR(train ,test, num_features,lambda_, stop_criterion,rng = None):

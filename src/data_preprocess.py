@@ -1,62 +1,140 @@
+"""Preprocessing data"""
+
 from helpers import build_index_groups
 import numpy as np
 import scipy.sparse as sp
 import matplotlib.pyplot as plt
 
 def get_user_means(train, nz_col_rowindices):
+    """returns mean for every user.
+    
+       input:   train               -data matrix (D x N)
+                nz_col_rowindices   -indices of nonzero movie ratings of each user
+                
+       output:  user_means          -mean of ratings for every user
+    """
+    
+    #initialize user_means array
     user_means = np.zeros((train.shape[1],1))
+    
+    #for every user, estimate mean of their ratings
     for j, rowindices in nz_col_rowindices:
         user_means[j,0] = np.mean(train[rowindices,j])
+        
     return user_means
 
-def get_item_means(train, nz_row_colindices):
+def get_item_means(train, nz_row_colindice):
+    """returns mean rating for every movie.
+    
+       input:   train               -data matrix (D x N)
+                nz_col_rowindices   -indices of users that rated each movie 
+                
+       output:  item_means          -mean of ratings for every movie
+    """
+    
+    #initialize item_means array
     item_means = np.zeros((train.shape[0],1))
+    
+    #for every movie, estimate average rating
     for i, colindices in nz_row_colindices:
         item_means[i,0] = np.mean(train[i,colindices])
+        
     return item_means
 
 def get_global_means(train, nz_train):
+    """returns mean of ratings.
+    
+       input:   train               -data matrix (D x N)
+                nz_train            -indices of users that rated each movie 
+                
+       output:  means               -matrix of means(itendical elements)
+                mean                -mean
+    """
+    
     means = sp.lil_matrix(train.shape)
+    
     rows, cols, ratings = sp.find(train)
     mean = np.mean(ratings)
     means[rows,cols] = mean
+    
     return means, mean
 
 def get_unbiased_matrix(train, user_means, item_means, means, m):
-    """ 
-    return bias and mean matrix where user, item or combined means
-    have been subtracted.
+    """returns unbiased matrix
+    
+       input:   train               -data matrix (D x N)
+                user_means          -average of ratings of each user
+                item_means          -average rating of each movie
+                means               -mean of ratings(matrix)
+                m                   -{'no','global','item','user'}
+                                      'no'        -no bias
+                                      'global'    -global bias
+                                      'item'      -item bias
+                                      'user'      -user bias
+                                      'combined'  -combination of global, item and user bias
+                                      
+                
+       output:  train_normalized    -dataset without specified bias
+                train_means         -bias deducted from data
     """
+    
+    #find nonzero rows, columns and elements of train
     rows, cols, ratings = sp.find(train)
+    
+    #initialize unbiased matrix and total bias deducted from the data
     train_normalized = sp.lil_matrix(train.shape)
     train_means = sp.lil_matrix(train.shape)
+    
+    #no bias
     if m=='no':
         print('no method ok')
         return train, sp.lil_matrix(train.shape)
+    
+    #global bias
     elif m=='global':
         train_normalized[rows,cols] = train[rows,cols] - means[rows,cols]
         train_means[rows,cols] = means[rows,cols]
         assert train_normalized.mean() < 1e-14
         print('global ok')
-    elif m=='item':
-            #train_normalized[i,colindices] = train[i,colindices]-item_means[i,0]
-            #train_means[i,colindices] = item_means[i,0]
+        
+    #item bias    
+    elif m=='item':     
         train_means[rows,cols] = item_means[rows].T
         train_normalized[rows,cols] = train[rows,cols] - item_means[rows].T
         assert np.mean(train_normalized.mean(axis=1)) < 1e-14
         print('item ok')
+        
+    #user bias    
     elif m=='user':
         train_means[rows,cols] = user_means[cols].T
         train_normalized[rows,cols] = train[rows,cols] - user_means[cols].T
         assert np.mean(train_normalized.mean(axis=0)) < 1e-14
         print('user ok')
+        
+    #combined bias    
     elif m=='combined':
         train_means[rows,cols] = user_means[cols].T + item_means[rows].T - means[rows,cols]
         train_normalized[rows,cols] = train[rows,cols] - train_means[rows,cols]
         print('combined ok')
+        
     return train_normalized, train_means
 
 def get_predictions(ratings, user_means, item_means, mean, m):
+    """add back biases to the prediction.
+    
+       input:   ratings               -data matrix (D x N)
+                user_means            -average of ratings of each user 
+                item_means            -average rating of each movie
+                mean                  -mean of ratings
+                m                     -{'global','item','user'}
+                                        'global'    -add back global bias 
+                                        'item'      -add back movie bias
+                                        'user'      -add back user bias
+                                        'combined'  -add back combined bias
+                
+       output:  predictions           -predictions with biases 
+    """
+    
     predictions = np.empty(ratings.shape)
     item_matrix = np.tile(item_means, (1,predictions.shape[1]))
     user_matrix = np.tile(user_means.T, (predictions.shape[0],1))
