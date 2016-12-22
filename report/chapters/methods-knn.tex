@@ -1,0 +1,11 @@
+
+k-nearest neighbors (kNN) are a classical method for recommender systems. Ratings or items are predicted by using the past ratings of the $k$ most similar users or items. If the influence of the similar users/items is weighted by the similarity, all users/items may be used for the prediction. Using the user-item matrix to compute the similarity is often called collaborative filtering. Computing the item similarities from the item attributes leads to content-based filtering. Popular similarity metrics are the cosine similarity, Pearson correlation, Mean Squared Difference similarity, and baselines based pearson correlation. 
+
+
+We use flowing methods to predict the ratings: 
+\begin{itemize}
+\item KNNBasic
+The prediction $\hat{r}_{ui}$ is set as:
+$$\hat{r}_{ui}=\frac{\sum_{v \in N_i^k(u)} sim(u,v).r_{vi}}{\sum_{v \in N_i^k(u)} sim(u,v)}$$
+\end{itemize}
+They are For each of these algorithms, the actual number of neighbors that are aggregated to compute an estimation is necessarily less than or equal to $k$. First, there might just not exist enough neighbors and second, the sets $N_i^k(u) N_k^u(i)$ only include neighbors for which the similarity measure is positive. It would make no sense to aggregate ratings from users or items that are negatively correlated. 
