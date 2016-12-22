@@ -7,6 +7,7 @@
                 
    output :  plot             -plot of performance with different bias removal
                                in results/Bias folder
+                               !! folder K{argv[1]} should exist in results folder
    
    exampl.:  python3 biases_test.py 10 0.06255
 """
@@ -19,15 +20,17 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import sklearn.model_selection as skm
-import plots as p
+import plots as pl
 import helpers as h
 import data_preprocess as dp
 import sys
 import our_helpers as ohe
+from ALS import ALS_WR
 
 
 if( len(sys.argv) != 3 ):
     print("exampl.:  python3 biases_test.py n_latent_features lambda ")
+    exit()
 
 
 
@@ -40,18 +43,17 @@ print("reading data")
 path_dataset = "../data/data_train.csv"
 ratings = h.load_data(path_dataset)
 
-num_items_per_user, num_users_per_item = p.plot_raw_data(ratings)
+num_items_per_user, num_users_per_item = pl.plot_raw_data(ratings)
 nz_ratings, nz_row_colindices, nz_col_rowindices = h.build_index_groups(ratings)
 
 #estimating means
 user_means = dp.get_user_means(ratings, nz_col_rowindices) 
 item_means = dp.get_item_means(ratings, nz_row_colindices)
-means = dp.get_global_means(ratings, nz_ratings) 
+means, mean = dp.get_global_means(ratings, nz_ratings) 
 
 #splitting the data
 print("splitting data")
-valid_ratings, train, test, stets = ohe.split_data(
-    ratings, num_items_per_user, num_users_per_item, min_num_ratings=0, p_test=0.1)
+valid_ratings, train, test = ohe.split_data(ratings,  p_test=0.1)
 
 #creating list of all the biases
 methods=['no','global','item','user','combined']
@@ -91,8 +93,8 @@ for m in methods:
 
     print("generating item and user feature matrices")
     #running ALS on the data
-    item_features, user_features, train_errors, test_errors = ohe.ALS(
-        train_n, test_n,K, lambda_, 1e-4)
+    item_features, user_features, train_errors, test_errors = ALS_WR(
+        train_n, test_n,K, lambda_, 1e-4,1)
     
     #saving errors
     errors_tr.append(train_errors)

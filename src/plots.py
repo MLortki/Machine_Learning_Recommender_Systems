@@ -56,8 +56,7 @@ def plot_train_test_data(train, test):
     
     
 def plot_train_test_errors(train_errors, test_errors, lambda_str , K , path, rng):
-
-    
+    """visualize train and test errors."""
     plt.plot(range(rng), train_errors, marker='o', label='Training Data');
     plt.plot(range(rng), test_errors, marker='v', label='Test Data');
     plt.title('ALS-WR Learning Curve, lambda = %s, K = %d'%(lambda_str, K))
@@ -70,7 +69,7 @@ def plot_train_test_errors(train_errors, test_errors, lambda_str , K , path, rng
     
     
 def plot_cv_errors(errors, lambdas , K , path):
-            
+    """visualize errors of different lambdas."""      
     colors = cycle(["aqua", "black", "blue", "fuchsia", "gray", "green", "lime", "maroon", "navy", "olive", "purple", "red", "silver", "teal", "yellow"])
         
     markers = cycle([ ".", ",", "o", "v" , "^" , ">", "1", "2", "3", "4", "8", "s", "p", "*", "h"])
@@ -93,7 +92,7 @@ def plot_cv_errors(errors, lambdas , K , path):
     
     
 def plot_general (errors, labels , x_axis_name, y_axis_name, title, path):
-            
+    """generalized plot."""     
     colors = cycle(["aqua", "black", "blue", "fuchsia", "gray", "green", "lime", "maroon", "navy", "olive", "purple", "red", "silver", "teal", "yellow"])
         
     markers = cycle([ ".", ",", "o", "v" , "^" , ">", "1", "2", "3", "4", "8", "s", "p", "*", "h"])
@@ -112,25 +111,19 @@ def plot_general (errors, labels , x_axis_name, y_axis_name, title, path):
     plt.show()
     
 def plot_cv_train_test(test_avg, train_avg, lambdas, path):
+    """plotting avg. train and avg.test error with lambdas on x axis."""
+
+    plt.plot(lambdas, test_avg, marker = "o", color="green", label="validating cv error")
+    plt.plot(lambdas, train_avg, marker = "v", color="blue",  label="training cv error" )
     
-    x_name= []
-    
-    for lambda_ in lambdas:
-        
-        lambda_str = ('%f' % lambda_).rstrip('0').rstrip('.')
-        name = "$\lambda$ =" +  lambda_str 
-        x_name.append(name)
-        
-    #plt.xticks(range(len(lambdas)), x_name)
-    
-    plt.plot(range(len(lambdas)), test_avg, marker = ".",  label="validating cv error")
     print(train_avg[0])
-    plt.plot(range(len(lambdas)), train_avg, marker = "o",  label="training cv error" )
+    print(test_avg[0])
     
     plt.title("Cross Validation Error for Different Regularization Parameters")
     plt.ylabel("10f cv RMSE")
-    plt.ylim(0.975 , 0.99)
-    plt.legend()
+    plt.ylim(0.86 , 0.99)
+    plt.xlabel("$\lambda$")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     plt.grid()
     plt.savefig("../results/"+path)
     plt.show()
