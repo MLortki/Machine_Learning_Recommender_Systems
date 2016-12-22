@@ -1,4 +1,4 @@
-"""Preprocessing data"""
+""" Functions to preprocess ratings matrix by bias correction etc. """
 
 from helpers import build_index_groups
 import numpy as np
@@ -160,6 +160,10 @@ def get_predictions(ratings, user_means, item_means, mean, m):
     return predictions
 
 def get_statistics(sparse_matrix):
+    """print out useful statistics of sparse prediction matrix.
+    
+       input:   sparse_matrix       -matrix 
+    """
     rows, cols, ratings = sp.find(sparse_matrix)
     user_ratings = np.zeros(1000)
     item_ratings = np.zeros(10000)
@@ -172,7 +176,7 @@ def get_statistics(sparse_matrix):
     return item_ratings, user_ratings
 
 if __name__=="__main__":
-    
+""" Creates visualization of above function when run from command line."""
     scale = np.arange(0,6)
     scale = np.vstack((scale,scale))
 

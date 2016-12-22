@@ -44,7 +44,6 @@ def make_ratings_mat(results, num_items, num_users):
 			ratings[i][u]=results[i*num_users+u]
 	return ratings
 
-
 def run(model, num_items, num_users):
 	test_data=make_test_sf(num_items, num_users)
 	results = model.predict(test_data).to_numpy()
