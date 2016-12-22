@@ -21,25 +21,25 @@ proportion of the valuable training data.
 The process of linear blending is shown in Figure \ref{fig:blending}. 
 The blending model is obtained by minimizing the mean squared prediction error
 on the probe set as suggested in \cite{Andreas2009}. 
-If we call $\mathbf{p}_i$ the vector of $N_P$ ordered predictions of
+If we call $p_i$ the vector of $N_P$ ordered predictions of
 method $i$ ($i = 1\ldots N_M$) on the
-probe set, and $\mathbf{r}$ the true values (in the same order), then the weight vector
-$\mathbf{x}$ is obtained by solving 
+probe set, and $r$ the true values (in the same order), then the weight vector
+$x$ is obtained by solving 
 
 \begin{align}
-  \mathbf{P} &=[\mathbf{p}_0, \mathbf{p}_1, \ldots, \mathbf{p}_{N_M}] \inR{N_P\times N_M}, \\
-  \mathbf{x} &= (\mathbf{P}^T\mathbf{P})^{-1}\mathbf{P}^T\mathbf{r} \with
-  \mathbf{x},\mathbf{r}\inR{N_M}.
+  \mathbf{P} &=[p_0, p_1, \ldots, p_{N_M}] \inR{N_P\times N_M}, \\
+  x &= (\mathbf{P}^T\mathbf{P})^{-1}\mathbf{P}^Tr \with
+  x,r\inR{N_M}.
 \end{align}
 
 The best prediction is obtained by applying these weights to the predictions of
-the methods on the kaggle set of size $N_T$, $\mathbf{q}_i$, yielding the optimum ratings
+the methods on the kaggle set of size $N_T$, $q_i$, yielding the optimum ratings
 vector,
 
 \begin{align}
-  \mathbf{Q} &=[\mathbf{q}_0, \mathbf{q}_1, \ldots, \mathbf{q}_{N_M}]
+  \mathbf{Q} &=[q_0, q_1, \ldots, q_{N_M}]
   \inR{N_T\times N_M}, \\
-  \hat{\mathbf{q}}_i &= \mathbf{Q}\mathbf{x} \inR{N_T}.
+  \hat{q}_i &= \mathbf{Q}x \inR{N_T}.
 \end{align}
 
 \begin{figure}[htbp]

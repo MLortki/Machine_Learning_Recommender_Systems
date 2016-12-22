@@ -9,7 +9,7 @@ The results for all tested methods are shown in Table \ref{tab:results}.
   method & test & kaggle\\
   \hline
   SGD & 1.0002 & 0.99256 \\
-  ALS & 1.02654 & 0.98 \\
+  ALS & 1.02654 & 0.98518 \\
   SGD Baseline & 1.00059 & -\\
   ALS Baseline & 0.99877 & -\\
   KNN ALS item & 1.04101 & -\\
@@ -59,7 +59,10 @@ based on the ratings (Figure \ref{fig:matrix}).
 \end{figure}
 
 ALS with weighted regularization gave us better results, compared to kNN and
-baseline methods. Models with more than 100 latent features were overfitting easily but giving good results in case of early stoppig (500 features scored around 0.988 on kaggle). The best results were achieved with $K=8$. Figure\ref{fig:als_cv}
+baseline methods. Models with more than 100 latent features were overfitting
+easily but giving good results in case of early stoppig (500 features scored
+around 0.988 on kaggle). The best results were achieved with $K=8$
+(Figure\ref{fig:als_cv})
  
 \begin{figure}[!tbp]
   \centering
