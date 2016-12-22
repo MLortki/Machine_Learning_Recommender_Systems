@@ -6,4 +6,8 @@ the least squares problem:
   b_i^2).
   \label{eq:sgd}
 \end{equation}
- Here, the first term strives to find $b_u$ and $b_i$ that fit the given ratings. The regularizing term avoids overfitting by penalizing the magnitudes of the parameters. Baselines can be estimated in two different ways: using Stochastic Gradient Descent (SGD) or Alternating Least Squares (ALS).
+ Here, the first term strives to find $b_u$ and $b_i$ that fit the given
+ ratings. The regularizing term avoids overfitting by penalizing the magnitudes
+ of the parameters. Baselines can be estimated in two different ways: using
+ Stochastic Gradient Descent (SGD) or Alternating Least Squares (ALS), both are
+ implemented by \cite{surprise}.

@@ -6,8 +6,8 @@ The data provided is of the form
 \end{equation}
 where $x_{nd}$ corresponds to the rating of user $d$ for movie $n$.  
 the ratings are discrete and lie between 1 and 5. Since every user only rates a
-very small subset of movies, the matrix is sparse. The data has the following
-characteristics.
+very small subset of movies, the matrix is sparse. The data have the following
+characteristics:
 
 \begin{itemize}
   \item The trainig set provided has 991561 non-zero entries, denoted by $R(u,i)$ which corresponds to 
@@ -28,8 +28,8 @@ validation sets, as described more in detail in \ref{sec:blending}. k-fold cross
 \subsubsection{Bias correction}
 \label{sec:biascorrection}
 
-Since users and movies can vary a lot in terms of their average ratings, 
-there might be some implicit bias in
+Users and movies can vary a lot in terms of their average ratings, 
+consequently, there might be some implicit bias in
 the data provided. 
 This biais was removed as follows by subtracting a correcting term from each
 element,
@@ -46,7 +46,7 @@ element,
   \label{eq:biases}
 \end{align}
 
-where the last term corresponds to what is used in \cite{Koren2009}. 
+where the combined bias term corresponds to what is used in \cite{Koren2009}. 
 The entries of the residual matrix, $\widetilde{x}_{nd}$ are then factorized as explained
 in \ref{sec:methods} and the bias is added again for the final predictions
 (Figure \ref{fig:biasmatrix}).
@@ -61,7 +61,8 @@ in \ref{sec:methods} and the bias is added again for the final predictions
 \end{figure}
 
 The performance with and without corrections was tested on ALS (Figure
-\ref{fig:bias}. As expected, the combined bias with underlying assumption that each rating can
+\ref{fig:bias}. 
+The combined bias with underlying assumption that each rating can
 be composed of a contribution by the user and one by the item, is the most
 accurate model. 
 

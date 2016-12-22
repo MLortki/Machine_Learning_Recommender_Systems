@@ -7,7 +7,9 @@
 \subsection{Latent Feature Models}
 \label{sec:methods}
 
-The goal is to factorize the given ratings matrix using two low-rank matrices, 
+In order to fill the missing ratings, we can 
+factorize the ratings matrix by two low-rank matrices, 
+
 \begin{equation}
   \fat{X} = \fat{W}\fat{Z}^T \with \fat{W} \inR{N \times K},
   \fat{Z} \inR{D \times K}, 
