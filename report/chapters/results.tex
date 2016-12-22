@@ -59,17 +59,22 @@ based on the rating \ref{fig:matrix}
 \end{figure}
 
 
+ALS with weighted regularization gave us better results, compared to kNN and baseline methods. Models with more than 100 laten features were overfitting easily but giving good results in case of early stoppig (500 features scored around 0.988 on kaggle). The best results were achieved with $K=8$. Figure\ref{fig:als_cv}
+ 
 \begin{figure}[!tbp]
   \centering
   \includegraphics[width=.9\columnwidth]{figures/scaled_trainavg_testavg.png}
   %\vspace{-3mm}
-  \caption{Results of 3-fold cross-validation (average rmse) for ALS}
-  \label{fig:sgd}
+  \caption{Results of 10-fold cross-validation (average rmse) for ALS}
+  \label{fig:als_cv}
   \centering
 \end{figure}
+
+visualizes results of 10-fold cross-validation, for different $\lambda$-s. 25 latent features scored slightly more than 8 features, Figure\ref{fig:cv_lambdas} plots change of RMSE train and RMSE test with respect to the step size, for different $\lambda$-s. Experiments with latent features above 500 proved inneficient, mostly because of overfitting.
+
 \begin{figure}[!tbp]
   \includegraphics[width=.9\columnwidth]{figures/scaled_test_train.png}
   %\vspace{-3mm}
   \caption{Run of different $\lambda$ for test=10\%, train=90\%.}
-  \label{fig:sgd}
+  \label{fig:cv_lambdas}
 \end{figure}
