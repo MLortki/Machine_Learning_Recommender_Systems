@@ -30,11 +30,6 @@ Y.~Hu, Y.~Koren, and C.~Volinsky, ``{Collaborative Filtering for Implicit
 Y.~Koren, R.~Bell, and C.~Volinsky, ``{Matrix Factorization Techniques for
   Recommender Systems},'' \emph{Computer}, vol.~42, no.~8, pp. 42--49, 2009.
 
-\bibitem{Aberger2009}
-C.~R. Aberger, Y.~Koren, R.~Bell, and C.~Volinsky, ``{Recommender : An Analysis
-  of Collaborative Filtering Techniques},'' \emph{Computer}, vol.~42, no.~8,
-  pp. 42--49, 2009.
-
 \bibitem{Salak2008}
 R.~Salakhutdinov and A.~Mnih, ``{Probabilistic Matrix Factorization},'' in
   \emph{Neural Information Processing Systems 21}, vol.~25, no. 2005, 2008, pp.
@@ -47,6 +42,30 @@ Y.~Zhou, D.~Wilkinson, R.~Schreiber, and R.~Pan, \emph{{Large-Scale Parallel
   0.4em\relax Berlin, Heidelberg: Springer Berlin Heidelberg, 2008, pp.
   337--348. [Online]. Available:
   \url{http://dx.doi.org/10.1007/978-3-540-68880-8{\_}32}
+\BIBentrySTDinterwordspacing
+
+\bibitem{graphlab}
+\BIBentryALTinterwordspacing
+{Carnegie Mellon University}, ``Graphlab collaborative filtering.'' [Online].
+  Available: \url{http://www.select.cs.cmu.edu/code/graphlab/pmf.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{pyspark}
+\BIBentryALTinterwordspacing
+{Apache Spark}, ``Spark python api.'' [Online]. Available:
+  \url{http://www.select.cs.cmu.edu/code/graphlab/pmf.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{surprise}
+\BIBentryALTinterwordspacing
+{Nicolas Hug}, ``Surprise.'' [Online]. Available:
+  \url{https://github.com/NicolasHug/Surprise/releases}
+\BIBentrySTDinterwordspacing
+
+\bibitem{fancyimpute}
+\BIBentryALTinterwordspacing
+{Alex Rubinsteyn, Sergey Feldman}, ``fancyimpute.'' [Online]. Available:
+  \url{https://pypi.python.org/pypi/fancyimpute/}
 \BIBentrySTDinterwordspacing
 
 \end{thebibliography}

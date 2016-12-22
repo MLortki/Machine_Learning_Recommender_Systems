@@ -8,49 +8,61 @@ Reallocated singl_function (elt_size=8) to 100 items from 50.
 Reallocated wiz_functions (elt_size=8) to 6000 items from 3000.
 Reallocated singl_function (elt_size=8) to 100 items from 50.
 Database file #1: literature_new.bib
+Warning--entry type for "graphlab" isn't style-file defined
+--line 1 of file literature_new.bib
+Warning--entry type for "pyspark" isn't style-file defined
+--line 8 of file literature_new.bib
+Warning--entry type for "surprise" isn't style-file defined
+--line 15 of file literature_new.bib
+Warning--entry type for "fancyimpute" isn't style-file defined
+--line 22 of file literature_new.bib
+Warning--I didn't find a database entry for "Aberger"
+Warning--I didn't find a database entry for "Dietterich"
+Warning--I didn't find a database entry for "PresentationGrandPrize"
 -- IEEEtran.bst version 1.13 (2008/09/30) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-You've used 5 entries,
+You've used 8 entries,
             4039 wiz_defined-function locations,
-            847 strings with 8252 characters,
-and the built_in function-call counts, 4546 in all, are:
-= -- 371
-> -- 105
-< -- 47
-+ -- 58
+            863 strings with 8494 characters,
+and the built_in function-call counts, 4985 in all, are:
+= -- 387
+> -- 98
+< -- 38
++ -- 54
 - -- 16
-* -- 237
-:= -- 674
-add.period$ -- 10
-call.type$ -- 5
-change.case$ -- 4
-chr.to.int$ -- 108
-cite$ -- 5
-duplicate$ -- 301
-empty$ -- 340
-format.name$ -- 21
-if$ -- 1037
+* -- 236
+:= -- 784
+add.period$ -- 16
+call.type$ -- 8
+change.case$ -- 7
+chr.to.int$ -- 90
+cite$ -- 8
+duplicate$ -- 355
+empty$ -- 419
+format.name$ -- 20
+if$ -- 1111
 int.to.chr$ -- 0
-int.to.str$ -- 5
-missing$ -- 49
-newline$ -- 40
-num.names$ -- 5
-pop$ -- 106
+int.to.str$ -- 8
+missing$ -- 66
+newline$ -- 57
+num.names$ -- 8
+pop$ -- 181
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 346
+skip$ -- 374
 stack$ -- 0
-substring$ -- 256
+substring$ -- 217
 swap$ -- 270
-text.length$ -- 11
+text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 5
+type$ -- 8
 warning$ -- 0
-while$ -- 25
-width$ -- 6
-write$ -- 75
+while$ -- 24
+width$ -- 9
+write$ -- 100
+(There were 7 warnings)
