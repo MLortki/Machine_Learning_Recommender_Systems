@@ -5,13 +5,13 @@ The data provided is of the form
   \fat{X} = (x_{nd}),
 \end{equation}
 where $x_{nd}$ corresponds to the rating of user $d$ for movie $n$.  
-the ratings are discrete and go from 1 to 5. Since every user only rates a
+the ratings are discrete and lie between 1 and 5. Since every user only rates a
 very small subset of movies, the matrix is sparse. The data has the following
 characteristics.
 
 \begin{itemize}
-  \item The trainig set provided has 991561 non-zero entries, which corresponds to 
-a fraction of $f_{train} \approx 0.1$ with respect to the number of unknowns($N \times $D). 
+  \item The trainig set provided has 991561 non-zero entries, denoted by $R(u,i)$ which corresponds to 
+a fraction of $\approx 0.1$ with respect to the number of unknowns ($N \times $D). 
   \item Each user in the dataset has rated at least 8 movies, the maximum
     ratings per user is 4590. On average, a user rates roughly 1177 movies.
   \item Each movie in the dataset is rated by at least 3 users, and the maximum
@@ -22,15 +22,14 @@ a fraction of $f_{train} \approx 0.1$ with respect to the number of unknowns($N 
 \subsubsection{Splitting}
 \label{sec:splitting}
 
-ToDo: describe how we split the data
-blablablabla
+The provided training data has been split into a training set and 2 small 
+validation sets, as described more in detail in \ref{sec:blending}. k-fold cross-validation for was performed on the training set.
 
 \subsubsection{Bias correction}
 \label{sec:biascorrection}
 
-Since users and movies can vary a lot in terms of their average ratings, i.e. some
-users might give generally give more positive ratings than others and some
-movies might be more negative than others, there might be some implicit bias in
+Since users and movies can vary a lot in terms of their average ratings, 
+there might be some implicit bias in
 the data provided. 
 This biais was removed as follows by subtracting a correcting term from each
 element,
@@ -46,10 +45,11 @@ element,
  \end{cases}, 
   \label{eq:biases}
 \end{align}
+
 where the last term corresponds to what is used in \cite{Koren2009}. 
 The entries of the residual matrix, $\widetilde{x}_{nd}$ are then factorized as explained
-in \ref{sec:methods} and the bias is added again for the final predictions.
-\ref{fig:matrix}
+in \ref{sec:methods} and the bias is added again for the final predictions
+(Figure \ref{fig:biasmatrix}).
 
 \begin{figure}[htbp]
   \centering
@@ -57,12 +57,13 @@ in \ref{sec:methods} and the bias is added again for the final predictions.
   \caption{A simple example for bias correction. The bias matrix is obtained by
   substracting the mean of the corresponding user. The matrix composed of these
   means and the biases sum up to the original training matrix as expected.}
-  \label{fig:matrix}
+  \label{fig:biasmatrix}
 \end{figure}
 
-As expected, the combined bias with underlying assumption that each rating can
+The performance with and without corrections was tested on ALS (Figure
+\ref{fig:bias}. As expected, the combined bias with underlying assumption that each rating can
 be composed of a contribution by the user and one by the item, is the most
-accurate model. \ref{fig:bias} 
+accurate model. 
 
 \begin{figure}[htbp]
   \centering

@@ -35,9 +35,9 @@ $N_{epochs} = 28$, as shown in Figure \ref{fig:sgd}.
   \label{fig:sgd}
 \end{figure}
 
-A visualization of the obtained predictions was created by shifting all
+A visualization of the obtained predictions was created by 
 assembling all non-zero entries for each user and coloring each element
-based on the rating \ref{fig:matrix}
+based on the ratings (Figure \ref{fig:matrix}).   
 
 \begin{figure}[!tbp]
   \begin{subfigure}[b]{0.99\columnwidth}
@@ -58,8 +58,8 @@ based on the rating \ref{fig:matrix}
   \label{fig:matrix}
 \end{figure}
 
-
-ALS with weighted regularization gave us better results, compared to kNN and baseline methods. Models with more than 100 laten features were overfitting easily but giving good results in case of early stoppig (500 features scored around 0.988 on kaggle). The best results were achieved with $K=8$. Figure\ref{fig:als_cv}
+ALS with weighted regularization gave us better results, compared to kNN and
+baseline methods. Models with more than 100 latent features were overfitting easily but giving good results in case of early stoppig (500 features scored around 0.988 on kaggle). The best results were achieved with $K=8$. Figure\ref{fig:als_cv}
  
 \begin{figure}[!tbp]
   \centering

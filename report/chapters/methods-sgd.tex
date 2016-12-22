@@ -1,9 +1,9 @@
 The stochastic gradient descent (SGD) algorithm used in this report is provided by the
-\textit{Surprise} library
-\footnote{\href{}{https://github.com/NicolasHug/Surprise}} by Nicolas Hug.  
-It is based on the algorithm provided by  
+\textit{Surprise} library \cite{surprise}.
+It is based on the algorithm provided by 
 Simon Funk \footnote{\href{}{http://sifter.org/~simon/journal/20061211.html}}, 
-which uses bias correction as described in \cite{Koren2009}. 
+which uses bias correction as described in \cite{Koren2009}, which minimizes the
+cost function as defined in \eqref{eq:sgd}.
 Without this bias correction, it reduces to the algorithm given in \cite{Salak2008}. 
 
 As shown in \ref{sec:biascorrection} and by \cite{Aberger2009}, we expect better predictions when removing

@@ -4,7 +4,7 @@
 
 \input{chapters/preprocessing}
 
-\subsection{Machine learning methods}
+\subsection{Latent Feature Models}
 \label{sec:methods}
 
 The goal is to factorize the given ratings matrix using two low-rank matrices, 
@@ -15,19 +15,21 @@ The goal is to factorize the given ratings matrix using two low-rank matrices,
 where $K$ is the number of latent features, and \fat{Z} and \fat{W} are in the following
 referred to as the user and feature matrix respectively.
 
-\subsubsection{Baseline methods}
-\input{chapters/methods-baseline}
-
-
-\subsubsection{kNN}
-\input{chapters/methods-knn}
-
 \subsubsection{Bias Stochastic Gradient Descent}
 \input{chapters/methods-sgd}
 
 \subsubsection{Alternating Least Squares}
 \input{chapters/methods-als}
 
+\subsection{Neighborhood Modles}
+
+\subsubsection{Baseline methods}
+\input{chapters/methods-baseline}
+
+\subsubsection{kNN}
+\input{chapters/methods-knn}
+
 \subsection{Blending}
+\label{sec:blending}
 
 \input{chapters/methods-blending}
