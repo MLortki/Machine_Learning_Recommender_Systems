@@ -2,6 +2,7 @@
 src/__pycache__/
 src/.ipynb_checkpoints/
 results/dump*
+*.py~
 
 #Latex
 *.log
