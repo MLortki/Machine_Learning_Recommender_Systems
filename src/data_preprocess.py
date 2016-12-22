@@ -159,6 +159,18 @@ def get_predictions(ratings, user_means, item_means, mean, m):
         
     return predictions
 
+def get_statistics(sparse_matrix):
+    rows, cols, ratings = sp.find(sparse_matrix)
+    user_ratings = np.zeros(1000)
+    item_ratings = np.zeros(10000)
+    for i in range(10000):
+        item_ratings[i] = np.count_nonzero(rows==i)
+    for i in range(1000):
+        user_ratings[i] = np.count_nonzero(cols==i)
+    print('item min={},max={},mean={}'.format(np.min(item_ratings),np.max(item_ratings),np.mean(item_ratings)))
+    print('user min={},max={},mean={}'.format(np.min(user_ratings),np.max(user_ratings),np.mean(user_ratings)))
+    return item_ratings, user_ratings
+
 if __name__=="__main__":
     
     scale = np.arange(0,6)

@@ -8,15 +8,53 @@ are shown to perform better in certain regions of the features space than
 others, giving each method a higher weight in the regions where it performs
 best.
 
-The splitting of the dataset is done as suggested in
+The splitting of the kaggle dataset is done as suggested in
 \cite{PresentationGrandPrize}: each method is trained on a fixed subset of 95\% of the
 dataset (training set), while the remaining 5\% are split up equally, and one half is used to
-compare the different methods (probe set) and finally the other half is used to create a
-valuable prediction of the performance of the final, blended method (validation
-set).  
-This splitting ensures at least 30'000 non-zero entries in the smallest sets
-($N_{probe}$),
+compare the different methods (probe set) and the other half is used to create a
+valuable prediction of the performance of the final, blended method (test set).  
+This splitting ensures at least 30'000 non-zero entries in the smallest probe
+and test sets,
 which was considered enough for the evaluation, and removes only a small
 proportion of the valuable training data.
 
-Blending is great because...
+The process of linear blending is shown in Figure \ref{fig:blending}. 
+The blending model is obtained by minimizing the mean squared prediction error
+on the probe set as suggested in \cite{PresentationGrandPrize}. 
+If we call $\mathbf{p}_i$ the vector of $N_P$ ordered predictions of
+method $i$ ($i = 1\ldots N_M$) on the
+probe set, and $\mathbf{r}$ the true values (in the same order), then the weight vector
+$\mathbf{x}$ is obtained by solving 
+
+\begin{align}
+  \mathbf{P} &=[\mathbf{p}_0, \mathbf{p}_1, \ldots, \mathbf{p}_{N_M}] \inR{N_P\times N_M}, \\
+  \mathbf{x} &= (\mathbf{P}^T\mathbf{P})^{-1}\mathbf{P}^T\mathbf{r} \with
+  \mathbf{x},\mathbf{r}\inR{N_M}.
+\end{align}
+
+The best prediction is obtained by applying these weights to the predictions of
+the methods on the kaggle set of size $N_T$, $\mathbf{q}_i$, yielding the optimum ratings
+vector,
+
+\begin{align}
+  \mathbf{Q} &=[\mathbf{q}_0, \mathbf{q}_1, \ldots, \mathbf{q}_{N_M}]
+  \inR{N_T\times N_M}, \\
+  \hat{\mathbf{q}}_i &= \mathbf{Q}\mathbf{x} \inR{N_T}.
+\end{align}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/blending2.png}
+  \vspace{-3mm}
+  \caption{Visualization of blending process used to combine the
+  methods (\textbf{orange}: datasets, 
+  \textbf{green}: operations, \textbf{blue}: results).
+  The models are trained on a subset of the kaggle training set and 
+  predictions tested on the probe set to evaluate their performance 
+  ($p_i$ vs. $r$). The predictions ($q_i$) for the kaggle test set
+  are optimally weighted using linear regression, and the obtained blending method is tested on the test
+  to predict its performance.}
+  \label{fig:blending}
+\end{figure}
+
+

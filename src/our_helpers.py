@@ -54,7 +54,8 @@ def write_predictions_csv(path_output, ratings):
         for i,row in enumerate(rows):
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': data[i]})
-    print('Saved predictions at',path_output) 
+            counter += 1
+    print('Saved {} predictions at {}'.format(counter,path_output)) 
 
 def split_data(ratings,  p_test=0.1, sparse= True):
     """split the ratings to training data and test data..
