@@ -1,0 +1,8 @@
+
+Large user and item effects—systematic tendencies for some users to give higher ratings than others, and for some items to receive higher ratings than others. It is customary to adjust the data by accounting for
+these effects, which we encapsulate within the baseline estimates. Denote by $\mu$ the overall average rating. A baseline estimate for an unknown rating $r_{ui}$ is denoted by $b_{ui}$ and accounts for the user and item effects: $b_{ui} = \mu + b_u + b_i$. The parameters $b_u$ and $b_i$ indicate the observed deviations of user $u$ and item $i$, respectively, from the average. In order to estimate $b_u$ and $b_i$ one can solve
+the least squares problem: 
+$$min_{b} \sum_{(u,i)\in K} (r_{ui}-\mu-b_u-b_i)^2+\lambda(\sum_u b_u^2 +\sum_i b_i^2)$$.
+ Here, the first term strives to find $b_us$ and $b_is$ that fit the given ratings. The regularizing term avoids overfitting by penalizing the magnitudes of the parameters. Baselines can be estimated in two different ways: using Stochastic Gradient Descent (SGD) or Alternating Least Squares (ALS).
+
+
