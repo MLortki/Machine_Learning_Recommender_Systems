@@ -14,6 +14,7 @@
 ### Run.py 
 is included in the src folder
 run: python3 run.py
+(none of the above mentioned libraries is needed to run run.py)
 
 ### Folders and files in repository:
 - data: contains train and test data for different libraries and for different purposes
