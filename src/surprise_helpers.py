@@ -96,7 +96,8 @@ def run_all_algorithm(fold_files, output_prefix):
     """
     
     rmse_list = []
-    rmse_list.append(run_and_save(ALS_BaselineOnly(), fold_files, "../submission/"+output_prefix+"ALS_BaselineOnly.csv"))
+
+    """rmse_list.append(run_and_save(ALS_BaselineOnly(), fold_files, "../submission/"+output_prefix+"ALS_BaselineOnly.csv"))
     rmse_list.append(run_and_save(SGD_BaselineOnly(), fold_files, "../submission/"+output_prefix+"SGD_BaselineOnly.csv"))
     
     rmse_list.append(run_and_save(KNNBasic_ALS_pearson_baseline_user_based(), fold_files, "../submission/"+output_prefix+"KNNBasic_ALS_pearson_baseline_user_based.csv"))
@@ -116,8 +117,9 @@ def run_all_algorithm(fold_files, output_prefix):
     rmse_list.append(run_and_save(KNNWithMeans_cosine_item_based(), fold_files, "../submission/"+output_prefix+"KNNWithMeans_cosine_item_based.csv"))
     rmse_list.append(run_and_save(KNNWithMeans_pearson_user_based(), fold_files, "../submission/"+output_prefix+"KNNWithMeans_pearson_user_based.csv"))
     rmse_list.append(run_and_save(KNNWithMeans_msd_user_based(), fold_files, "../submission/"+output_prefix+"KNNWithMeans_msd_user_based.csv"))
-    rmse_list.append(run_and_save(KNNWithMeans_msd_item_based(), fold_files, "../submission/"+output_prefix+"KNNWithMeans_msd_item_based.csv"))
-    
+    rmse_list.append(run_and_save(KNNWithMeans_msd_item_based(), fold_files, "../submission/"+output_prefix+"KNNWithMeans_msd_item_based.csv"))"""
+
+
     rmse_list.append(run_and_save(KNNBaseline_pearson_baseline_user_based(), fold_files, "../submission/"+output_prefix+"KNNBaseline_pearson_baseline_user_based.csv"))
     rmse_list.append(run_and_save(KNNBaseline_pearson_baseline_item_based(), fold_files, "../submission/"+output_prefix+"KNNBaseline_pearson_baseline_item_based.csv"))
     rmse_list.append(run_and_save(KNNBaseline_cosine_user_based(), fold_files, "../submission/"+output_prefix+"KNNBaseline_cosine_user_based.csv"))
