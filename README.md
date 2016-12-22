@@ -1,5 +1,5 @@
 # Machine Learning Project2 - Recommender Systems
-## Manana Lordkipanidze, Aidasadat Mousavifar, Frederike Dümbgen
+## Manana Lortkipanidze, Aidasadat Mousavifar, Frederike Dümbgen
 
 ### Dependencies
 - [graphlab](http://www.select.cs.cmu.edu/code/graphlab/pmf.html) (v2.2)
@@ -10,4 +10,7 @@
 ### File structure
 - run_*.py python executable scripts
 - (other)*.py python libraries
+
+###Run.py 
+is included in the src folder, it contains all the instructions how to be run
 
