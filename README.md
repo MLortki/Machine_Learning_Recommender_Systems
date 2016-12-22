@@ -12,7 +12,8 @@
 - (other)*.py python libraries
 
 ### Run.py 
-is included in the src folder, it contains all the instructions how to be run
+is included in the src folder
+run: python3 run.py
 
 ### Folders and files in repository:
 - data: contains train and test data for different libraries and for different purposes
@@ -22,6 +23,11 @@ is included in the src folder, it contains all the instructions how to be run
 - saved: saved predictions for blending and different purposes
 - src: source files
 - submission: various submission generating during these two weeks
+
+### Files in src:
+All the .py files having run in their names are runnable python files for different purposes. All the description on how to run them and what is their purpose is contained inside of them.
+
+
 
 
 
