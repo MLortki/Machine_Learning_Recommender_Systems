@@ -1,5 +1,10 @@
 from surprise_helpers import run_all_algorithm
 
+"""
+1- pip install surprise
+2- pthon surprise_run.py
+
+"""
 def main():
 	#learn all models on blending train set
 	fold_files=[('../data/blending_train_surprise.csv', '../data/data_train_surprise.csv')]

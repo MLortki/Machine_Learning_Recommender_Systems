@@ -465,3 +465,45 @@ def KNNWithMeans_msd_item_based():
                }
     return KNNWithMeans(sim_options=sim_options)
 
+
+def train_SVD():
+    """
+        Find best parameters for SVD algorithm.
+       
+        input:   --      --
+                
+        output:  rmses   -The rmse list of running SVD on all parameters set 
+    """
+    
+    #initialize parameters
+    n_factors_range = np.array([10,15,20])    #number of columns
+    reg_all_range = np.logspace(-1.9,-1,10)   #The regularization term for all parameters
+    n_epochs_range = np.arange(10,60,10)      #The number of iteration of the SGD procedure.
+    lr_all=0.005                              #The learning rate for all parameters
+    biased=True                               #use baselines (or biases)
+    
+    
+    results_path = '../results/SGD_surprise/'
+    rmses = np.empty((len(n_factors_range),len(reg_all_range), len(n_epochs_range)))
+    
+    for i,n_factors in enumerate(n_factors_range):
+        print('testing with n_factors={}'.format(n_factors))
+        for j,reg_all in enumerate(reg_all_range):
+            print('testing with reg_all={}'.format(reg_all))
+            for k,n_epochs in enumerate(n_epochs_range):
+                print('testing with n_epochs={}'.format(n_epochs))
+                
+                #train SVD based on given parameters 
+                algo=my_SVD(int(n_factors), n_epochs, lr_all, reg_all, biased)
+                
+                #cross validation on train_data and compute rmse
+                rmses[i,j,k],_=cross_validation(algo, train_data)
+                print('rmse={}'.format(rmses[i,j,k]))
+            
+            results_name = 'rmse_{}_{}'.format(n_factors, reg_all)
+            np.savetxt(results_path + results_name + '.csv', rmses[i,j,:], delimiter=",")
+    return rmses
+
+train_data.split(n_folds=3)
+rmses = train_SVD()
+

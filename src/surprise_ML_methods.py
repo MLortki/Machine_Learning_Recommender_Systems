@@ -504,6 +504,4 @@ def train_SVD():
             np.savetxt(results_path + results_name + '.csv', rmses[i,j,:], delimiter=",")
     return rmses
 
-train_data.split(n_folds=3)
-rmses = train_SVD()
 
