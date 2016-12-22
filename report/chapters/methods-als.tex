@@ -1,9 +1,14 @@
-Alternating Least Squares (ALS) algorithm used in this report is implemented by us from scratch. We decided to use Tikhonov relugarizer instead of the normal one, because [] claimed it prevented model from overfitting. Our observation is, that it works well when number of laten features is below 50, but otherwise it's not that a big help. Todo:simple formula with explanation
-We observed that solving normal equations for each row of W and Z are independent on other rows, which gives us possibility to seperate them.
-[formula blablabla]
-As mentioned above, data matrix is incomplete so in order ro solve normal equations for lets say 0th row of W matrix. We build a new data 
-[]describe how we build it with a bit of formulas
+Alternating Least Squares (ALS) algorithm used in this report is implemented by us. Each step of this method is roughly following: consider W as a constant and find optimal Z by using normal equations and vice versa. 
 
+To prevent our model from overfitting we used regularized ALS, more specifically 
+\href{https://en.wikipedia.org/wiki/Tikhonov_regularization}{Tikhonovs relugarizer}
+. 
 
-Regularization added from \cite{Zhou2008}
+[formula of thing with description]
+Reason behind this decision is, that 
+\cite{Zhou2008}
+ claims it prevents model from overfitting. Our observation is, that it works well when number of laten features is below 50, otherwise there is almost no improvement. 
+
+We observed that solving normal equations for rows of W and Z do not depend on each other, which gives us possibility to seperate them.As mentioned above, data matrix is incomplete so in order to solve normal equations for rows of W and Z we create small subset of data, consisting only of ratings we need and corresponding rows of W or Z, depending for which matrix we solve the equation. 
+
 

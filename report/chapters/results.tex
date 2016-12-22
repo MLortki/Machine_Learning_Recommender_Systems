@@ -1,15 +1,75 @@
 \section{Results}
 
+The results for all tested methods are shown in Table \ref{tab:results}.
+
 \begin{table}
   \centering
 \begin{tabular}{|l|c|c|}
-  method & train & test \\
   \hline
-  SGD & & \\
-  \hline 
+  method & test & kaggle\\
+  \hline
+  SGD & 1.0002 & 0.99256 \\
+  ALS & 1.02654 & 0.98 \\
+  SGD Baseline & 1.00059 & -\\
+  ALS Baseline & 0.99877 & -\\
+  KNN ALS item & 1.04101 & -\\
+  KNN ALS user & 1.04285 & -\\
+  Blending of above & 0.98655 & 0.98490\\
+  \hline
 \end{tabular}
   \caption{Comparison of results obtained with different algorithms.}
   \label{tab:results}
 \end{table}
 
+The parameters for SGD are found using 3-fold cross-validation.
+The best set of parameters in terms of test error found
+is $\lambda=0.0359$, $\gamma=0.005$, $K=100$,
+$N_{epochs} = 28$, as shown in Figure \ref{fig:sgd}.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.9\columnwidth]{figures/lambda_rmse_28_0_005.png}
+  \vspace{-3mm}
+  \caption{Results from 3-fold cross validation for different parameters of SGD
+  matrix factorization.}
+  \label{fig:sgd}
+\end{figure}
+
+A visualization of the obtained predictions was created by shifting all
+assembling all non-zero entries for each user and coloring each element
+based on the rating \ref{fig:matrix}
+
+\begin{figure}[!tbp]
+  \begin{subfigure}[b]{0.99\columnwidth}
+    \includegraphics[width=.99\columnwidth]{figures/matrix_validation_clipped.png}
+    \caption{True Ratings}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.99\columnwidth}
+    \includegraphics[width=.99\columnwidth]{figures/matrix_validation_1_clipped.png}
+    \caption{ALS Baseline}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.99\columnwidth}
+    \includegraphics[width=.99\columnwidth]{figures/matrix_blending_clipped.png}
+    \caption{Linear Blending}
+  \end{subfigure}
+  \caption{Assembled ratings of different methods, colored by their respective
+  values.}
+  \label{fig:matrix}
+\end{figure}
+
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=.9\columnwidth]{figures/scaled_trainavg_testavg.png}
+  %\vspace{-3mm}
+  \caption{Results of 3-fold cross-validation (average rmse) for ALS}
+  \label{fig:sgd}
+  \centering
+\end{figure}
+\begin{figure}[!tbp]
+  \includegraphics[width=.9\columnwidth]{figures/scaled_test_train.png}
+  %\vspace{-3mm}
+  \caption{Run of different $\lambda$ for test=10\%, train=90\%.}
+  \label{fig:sgd}
+\end{figure}
