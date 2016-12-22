@@ -124,6 +124,24 @@ def create_dataset_surprise(path='../data/data_train.csv',output_path = \
     test_pd = pd.DataFrame({'item':rows,'user':cols,'rating':ratings})
     test_pd.to_csv(output_path,index=False)
 
+def bias_correction (full_ratings, test):
+    
+    nz_rows, nz_cols = test.nonzero()
+    nz_test = list( zip(nz_rows, nz_cols))
+    
+    mean_te = 0
+    mean_pr = 0
+    for i,j in nz_test:
+        mean_te += test[i,j]
+        mean_pr += full_ratings[i,j]
+        
+    mean_te /= len(nz_test)
+    mean_pr /= len(nz_test)
+    
+    #mean_pr= full_ratings.mean()
+    full_ratings += (mean_te - mean_pr)
+    
+    return full_ratings
 
 if __name__=="__main__":
     setup = '''
