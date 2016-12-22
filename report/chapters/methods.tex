@@ -7,7 +7,6 @@
 \subsection{Machine learning methods}
 \label{sec:methods}
 
-
 The goal is to factorize the given ratings matrix using two low-rank matrices, 
 \begin{equation}
   \fat{X} = \fat{W}\fat{Z}^T \with \fat{W} \inR{N \times K},
@@ -29,25 +28,6 @@ referred to as the user and feature matrix respectively.
 \subsubsection{Alternating Least Squares}
 \input{chapters/methods-als}
 
-
-
 \subsection{Blending}
 
 \input{chapters/methods-blending}
-
-\subsection{Evaluation}
-
-\begin{enumerate}
-  \item TODO: write about why kaggle results tend to be different than lcoal data for
-    SGD, but not for ALS.
-  \item \textbf{Cross valdiation} A 10-fold cross validation is implemented
-    for the whole training dataset to fix the hyperparameters. 
-
-  \item \textbf{Performance prediction} The training data was split into two
-    sets of ratio 1:2, emulating the actual data ratio between Kaggle's training
-    and test set. Doing the matrix factorization with this training/test set
-    pair enables us to predict if we can expect a better performance on the
-    kaggle dataset.  
-    TODO: what is this ratio for this dataset? 
-\end{enumerate}
-

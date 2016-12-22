@@ -1,0 +1,10 @@
+\section{Conclusion}
+
+Both latent factor models and neighborhood models have been trained for the 
+collaborative filtering problem proposed in the Netflix Grand Prize competition.
+The matrix factorization for the latent factor models was done using ALS and
+B-SGD, with the number of latent features and the optimization parameters
+determined empirically using k-fold crossvalidation. 
+The best prediction was obtained using ALS, but B-SGD improved similarly well.
+The blending of these methods with neighborhood models such as item- or
+user-based KNN has proven promising, leading to more varied predictions.  

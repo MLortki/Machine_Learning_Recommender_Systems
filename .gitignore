@@ -7,3 +7,5 @@ results/dump*
 *.log
 *.aux
 report/main.pdf
+*synctex.gz
+*.out

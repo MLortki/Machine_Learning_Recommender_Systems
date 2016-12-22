@@ -10,42 +10,41 @@ rankings, popularity, etc.)
 2. Collaborative filtering
 
 use previous ratings only, no externally provided information
-information available can be categorized in 
+information available can be categorized in
 - implicit feedback (frequency of clicks, minutes of watching tv-show [1], etc.
 problems: more difficult to link user behaviour to actual preference (for
 example no negative feedback possible)
 - explicit feedback (ratings [netflix challenge])
 problems: scale of ratings arbitrary, might be interpreted differently by
-different users. 
+different users.
 
-2.a neighborhood models 
+2.a neighborhood models
 
 - item-oriented models
 - user-oriented models
 find k items/users that are most similar to unknown [user/item] pair and predict
 rating/behaviour by weighted average.
 
-2.b latent factor models 
+2.b latent factor models
 
-- use representation of k 
+- use representation of k
 
 
-B. Methods for solving collaborative filtering with latent factor models. 
+B. Methods for solving collaborative filtering with latent factor models.
 
-Different methods (follows [2]) 
+Different methods (follows [2])
 
 1. SGD
 2. Bias SGD (B-SGD)
-to account for 
+to account for
 3. ALS
-4. Weighted ALS 
+4. Weighted ALS
 for implicit feedback.
 
-in [2], ALS is best for sparse datasets while SGD is best for  
+in [2], ALS is best for sparse datasets while SGD is best for
 in [3], they say that ALS is better for implicit feedback, but SGD is faster and
-easier than ALS. 
+easier than ALS.
 in [4], many methods to include neighborhood feedback are suggested.
 
 Problem with netflix solutions:
 in [5] temporal data used a lot! we cannot do that...
-

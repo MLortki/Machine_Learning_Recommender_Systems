@@ -44,6 +44,7 @@ element,
    \\
   \mu_{n} + \mu_{d} - \mu &\text{for combined biais}
  \end{cases}, 
+  \label{eq:biases}
 \end{align}
 where the last term corresponds to what is used in \cite{Koren2009}. 
 The entries of the residual matrix, $\widetilde{x}_{nd}$ are then factorized as explained
@@ -61,14 +62,14 @@ in \ref{sec:methods} and the bias is added again for the final predictions.
 \end{figure}
 
 As expected, the combined bias with underlying assumption that each rating can
-  be composed of a contribution by the user and one by the item, is the most
-  accurate model \ref{fig:bias} 
+be composed of a contribution by the user and one by the item, is the most
+accurate model. \ref{fig:bias} 
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=.7\columnwidth]{figures/bias.jpg}
   \vspace{-3mm}
   \caption{Performance of ALS algorithm using different variants of bias
-  correction. TODO: what are the parameters used for this? }
+  correction as shown in \eqref{eq:biases}}
   \label{fig:bias}
 \end{figure}
