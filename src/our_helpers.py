@@ -61,46 +61,45 @@ def split_data(ratings,  p_test=0.1, sparse= True):
     """split the ratings to training data and test data..
     
        input:   ratings         -prediction matrix (D x N)
-                p_test          -
+                p_test          -ration of test data
+                
+       output:  valid_ratings   -ratings
+                test            -test data
+                train           -train data
     """
     
-    min_num_ratings = 0
+    #estimatin number of rated movies per user and number of ratings per movie
     num_items_per_user, num_users_per_item = pl.plot_raw_data(ratings, False)
+    
     # set seed
     np.random.seed(988)
 
-    # select user and item based on the condition.
-    valid_users = np.where(num_items_per_user >= min_num_ratings)[0]
-    valid_items = np.where(num_users_per_item >= min_num_ratings)[0]
-    valid_ratings = ratings[valid_items, :][:, valid_users]
 
-    count_users = valid_ratings.shape[1]
-    count_items = valid_ratings.shape[0]
-    count_total = count_items * count_users
-
-    # this is supposedly the fastest way of doing this.
-    cx = sp.coo_matrix(valid_ratings)
+    #get nonzero element
+    cx = sp.coo_matrix(ratings)
 
     test = sp.lil_matrix(ratings.shape)
     train = sp.lil_matrix(ratings.shape)
   
         
     for i,j,v in zip(cx.row, cx.col, cx.data):
+        
         # put the element with probability 0.1 in test set.
         if (np.random.uniform()<p_test):
             test[i,j] = v
+            
         # put the element with probability 0.9 in train set.
         else:
             train[i,j] = v
 
-    (rows, cols, datas) = sp.find(valid_ratings)
+    (rows, cols, datas) = sp.find(ratings)
 
  
     print("Percentage of nz train data: % 2.4f, percentage of nz test data: % \
-            2.4f" % (train.nnz/valid_ratings.nnz, test.nnz/valid_ratings.nnz))
-    assert (train.nnz + test.nnz) == valid_ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
+            2.4f" % (train.nnz/ratings.nnz, test.nnz/ratings.nnz))
+    assert (train.nnz + test.nnz) == ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
     
-    return valid_ratings, train, test
+    return ratings, train, test
 
 
 def create_dataset_blending(path='../data/data_train.csv'):
