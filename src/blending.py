@@ -52,6 +52,7 @@ def apply_indices(sparse_matrices, dataset='train'):
     
     sparse_matrices_reduced = []
     for i,matrix in enumerate(sparse_matrices):
+        print('treating matrix', i)
         sparse_matrix = apply_indices_matrix(matrix, indices)
         sparse_matrices_reduced.append(sparse_matrix.copy())
         print('number of non-zero elements in matrix {}: {}'.format(i, sparse_matrix.nnz))
