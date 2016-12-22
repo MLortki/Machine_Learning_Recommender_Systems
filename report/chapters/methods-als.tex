@@ -4,19 +4,24 @@ To prevent our model from overfitting we used regularized ALS, more specifically
 \href{https://en.wikipedia.org/wiki/Tikhonov_regularization}{Tikhonovs relugarizer}
 . 
 
-[formula of thing with description]
-Reason behind this decision is, that 
+$$ \mathcal{L}(W,Z)=\sum_{(i,j)}(r_{ij}-W_iZ_j^T)^2$$
+
+$$+\lambda(\sum_i n_{W_i}||W_i||^2+\sum_j n_{Z_j}||Z_j||^2)$$
+
+,where $W_i$ are ratings receveid by the $i$-th movie and $Z_j$ are ratings given by the $j$-th user,  $n_{W_i}$ and $n_{Z_i}$ are number of ratings received by the $i$-th movie and number of movies rated by the $i$th user respectively, $\lambda$ is regularizations parameter and $r_{ij}$ is rating recevied by the $i$-th movie from the $j$-th user.
+
+Reason behind using such regularizations is, that 
 \cite{Zhou2008}
  claims it prevents model from overfitting. Our observation is, that it works well when number of laten features is below 50, otherwise there is almost no improvement. 
 
-We observed that solving normal equations for rows of W and Z do not depend on each other, which gives us possibility to seperate them.As mentioned above, data matrix is incomplete so in order to solve normal equations for rows of W and Z we create small subset of data, consisting only of ratings we need and corresponding rows of W or Z, depending for which matrix we solve the equation. 
+We observed that solving normal equations for single rows of W or Z do not depend on each other, which gives us possibility to seperate them.As mentioned above, data matrix is incomplete so in order to solve normal equations for rows of W or Z we create small subset of data, consisting only of ratings we need and corresponding rows of W or Z, depending for which matrix we solve the equation. 
 
-$$(W_iW_i^T + \lambda n_{Z_i})Z_i=W_iR_{innz} $$
+$$(W_iW_i^T + \lambda n_{Z_i})Z_i=W_iR_{ic\_nnz} $$
 
-$$(Z_iZ_i^T + \lambda n_{W_i})W_i=Z_iR^T_{innz}$$
+$$(Z_iZ_i^T + \lambda n_{W_i})W_i=Z_iR^T_{ir\_nnz}$$
 
-$$ \mathcal{L}(W,Z)=\sum_{(i,j)}(r_{ij}-W_iZ_j^T)^2$$
+,where $R_{ic\_nnz}$ and $R_{ir\_nnz}$ are ratings(nonzero) given by the $i$-th user and ratings(nonzero) received by the $i$-th movie respectively.
 
-$$+\lambda(\sum_i n_{w_i}||W_i||^2+\sum_j n_{z_j}||Z_j||^2)$$
+
 
 
