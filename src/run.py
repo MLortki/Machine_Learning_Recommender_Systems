@@ -8,7 +8,7 @@ from helpers import load_data, preprocess_data
 from plots import plot_raw_data
 import data_preprocess as dp
 import helpers as h
-import ALS_WR from ALS
+from ALS import ALS_WR
 from our_helpers import create_submission
 
 
