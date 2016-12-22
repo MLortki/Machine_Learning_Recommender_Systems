@@ -5,7 +5,7 @@
 import numpy as np
 import scipy.sparse as sp
 import plots as pl
-import sklearn.model_selection as skm
+#import sklearn.model_selection as skm
 import pandas as pd
 import csv
 from helpers import calculate_mse, load_data
