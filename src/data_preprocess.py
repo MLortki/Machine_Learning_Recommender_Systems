@@ -23,7 +23,7 @@ def get_user_means(train, nz_col_rowindices):
         
     return user_means
 
-def get_item_means(train, nz_row_colindice):
+def get_item_means(train, nz_row_colindices):
     """returns mean rating for every movie.
     
        input:   train               -data matrix (D x N)

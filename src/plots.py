@@ -79,14 +79,14 @@ def plot_cv_errors(errors, lambdas , K , path):
     for i, data in enumerate(errors):
         
         lambda_str = ('%f' % lambdas[i]).rstrip('0').rstrip('.')
-        plt.plot(range(len(data)), data, marker=next(markers),  label='lambda = %s'%lambda_str);
+        plt.plot(range(len(data)), data, marker=next(markers),  label='$\lambda$ = %s'%lambda_str);
         
-    plt.ylim(0.96 , 2)
-    plt.xlim(0 , 50)
+    plt.ylim(0.975 , 0.99)
+    #plt.xlim(0 , 50)
     plt.title('ALS-WR Learning Curve,  K = %d'% K)
     plt.xlabel('Number of Epochs');
     plt.ylabel('RMSE');
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     plt.grid()
     plt.savefig("../results/"+path)
     plt.show()
@@ -106,6 +106,30 @@ def plot_general (errors, labels , x_axis_name, y_axis_name, title, path):
     plt.title(title)
     plt.xlabel(x_axis_name);
     plt.ylabel(y_axis_name);
+    plt.legend()
+    plt.grid()
+    plt.savefig("../results/"+path)
+    plt.show()
+    
+def plot_cv_train_test(test_avg, train_avg, lambdas, path):
+    
+    x_name= []
+    
+    for lambda_ in lambdas:
+        
+        lambda_str = ('%f' % lambda_).rstrip('0').rstrip('.')
+        name = "$\lambda$ =" +  lambda_str 
+        x_name.append(name)
+        
+    #plt.xticks(range(len(lambdas)), x_name)
+    
+    plt.plot(range(len(lambdas)), test_avg, marker = ".",  label="validating cv error")
+    print(train_avg[0])
+    plt.plot(range(len(lambdas)), train_avg, marker = "o",  label="training cv error" )
+    
+    plt.title("Cross Validation Error for Different Regularization Parameters")
+    plt.ylabel("10f cv RMSE")
+    plt.ylim(0.975 , 0.99)
     plt.legend()
     plt.grid()
     plt.savefig("../results/"+path)
