@@ -11,4 +11,12 @@ Reason behind this decision is, that
 
 We observed that solving normal equations for rows of W and Z do not depend on each other, which gives us possibility to seperate them.As mentioned above, data matrix is incomplete so in order to solve normal equations for rows of W and Z we create small subset of data, consisting only of ratings we need and corresponding rows of W or Z, depending for which matrix we solve the equation. 
 
+$$(W_iW_i^T + \lambda n_{Z_i})Z_i=W_iR_{innz} $$
+
+$$(Z_iZ_i^T + \lambda n_{W_i})W_i=Z_iR^T_{innz}$$
+
+$$ \mathcal{L}(W,Z)=\sum_{(i,j)}(r_{ij}-W_iZ_j^T)^2$$
+
+$$+\lambda(\sum_i n_{w_i}||W_i||^2+\sum_j n_{z_j}||Z_j||^2)$$
+
 
