@@ -176,7 +176,7 @@ def get_statistics(sparse_matrix):
     return item_ratings, user_ratings
 
 if __name__=="__main__":
-""" Creates visualization of above function when run from command line."""
+    """ Creates visualization of above function when run from command line."""
     scale = np.arange(0,6)
     scale = np.vstack((scale,scale))
 
