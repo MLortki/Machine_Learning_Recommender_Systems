@@ -1,5 +1,18 @@
 \section{Discussion}
 
+Both ALS and B-SGD show a good performance on the dataset in terms of rmse
+error. Because of the high number of hyparameters, especially the need for an
+appropriate step size, B-SGD is the more difficult method to tune. ALS is easier
+to implement, however each step is more expensive, which makes it slower. To sum
+up with, both methods can achieve equally good results as long as the parameters
+are tuned optimally. 
 
-
+When looking more closely at the predictions, one can see that
+the prediction vary very little from the average prediction of around 3. This
+can be explained by the choice of the squared loss function: a wrong prediction
+is very strongly penalized by this loss function, so in case of uncertainty the
+method tends to predict the "safer" average values. This effect can be
+compensated for by adding similarity-based methods such as k-nearest neighbours.
+Blending these methods with the matrix factorization methods 
+in an optimal way leads to more varied and accurate predictions. 
 
