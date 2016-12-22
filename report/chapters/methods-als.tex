@@ -14,7 +14,7 @@ Reason behind using such regularizations is, that
 \cite{Zhou2008}
  claims it prevents model from overfitting. Our observation is, that it works well when number of laten features is below 50, otherwise there is almost no improvement. 
 
-We observed that solving normal equations for single rows of W or Z do not depend on each other, which gives us possibility to seperate them.As mentioned above, data matrix is incomplete so in order to solve normal equations for rows of W or Z we create small subset of data, consisting only of ratings we need and corresponding rows of W or Z, depending for which matrix we solve the equation. 
+We observed that solving normal equations for single rows of $\textbf{W}$ or $\textbf{Z}$ do not depend on each other, which gives us possibility to seperate them.As mentioned above, data matrix is incomplete so in order to solve normal equations for rows of $\textbf{W}$  or $\textbf{Z}$ we create small subset of data, consisting only of ratings we need and corresponding rows of $\textbf{W}$ or $\textbf{Z}$, depending for which matrix we solve the equation. 
 
 $$(W_iW_i^T + \lambda n_{Z_i})Z_i=W_iR_{ic\_nnz} $$
 
