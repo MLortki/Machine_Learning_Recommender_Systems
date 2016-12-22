@@ -14,3 +14,13 @@
 ###Run.py 
 is included in the src folder, it contains all the instructions how to be run
 
+###Folders and files in repository:
+-data: contains train and test data for different libraries and for different purposes
+-literature: literature used during working on this project
+-report: report latex file
+-results: visualization created by different programs and libraries
+-saved: saved predictions for blending and different purposes
+-src: source files
+-submission: various submission generating during these two weeks
+
+
