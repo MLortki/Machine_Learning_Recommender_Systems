@@ -6,8 +6,10 @@
 \BOOKMARK [3][-]{subsubsection.2.1.3}{Bias correction}{subsection.2.1}% 6
 \BOOKMARK [2][-]{subsection.2.2}{Machine learning methods}{section.2}% 7
 \BOOKMARK [3][-]{subsubsection.2.2.1}{Library Review}{subsection.2.2}% 8
-\BOOKMARK [3][-]{subsubsection.2.2.2}{Bias Stochastic Gradient Descent}{subsection.2.2}% 9
-\BOOKMARK [3][-]{subsubsection.2.2.3}{Alternating Least Squares}{subsection.2.2}% 10
-\BOOKMARK [2][-]{subsection.2.3}{Blending}{section.2}% 11
-\BOOKMARK [2][-]{subsection.2.4}{Evaluation}{section.2}% 12
-\BOOKMARK [1][-]{section*.1}{References}{}% 13
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Baseline methods}{subsection.2.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.3}{kNN}{subsection.2.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.2.4}{Bias Stochastic Gradient Descent}{subsection.2.2}% 11
+\BOOKMARK [3][-]{subsubsection.2.2.5}{Alternating Least Squares}{subsection.2.2}% 12
+\BOOKMARK [2][-]{subsection.2.3}{Blending}{section.2}% 13
+\BOOKMARK [2][-]{subsection.2.4}{Evaluation}{section.2}% 14
+\BOOKMARK [1][-]{section*.1}{References}{}% 15
