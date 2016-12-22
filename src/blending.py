@@ -76,6 +76,7 @@ def linear_blending(test_est, submission_est, test_true):
         create P or Q matrix as described in 
         input:
         '''
+        #TODO: remove again!
         P_or_Q = np.empty((matrix_list[0].nnz, len(matrix_list)))
         for i,matrix in enumerate(matrix_list):
             __,__,ratings = sp.find(matrix)
