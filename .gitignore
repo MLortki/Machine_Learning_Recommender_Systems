@@ -7,6 +7,6 @@ results/dump*
 #Latex
 *.log
 *.aux
-report/main.pdf
+#report/main.pdf
 *synctex.gz
 *.out
