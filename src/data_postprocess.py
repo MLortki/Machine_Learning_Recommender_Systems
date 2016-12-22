@@ -1,8 +1,17 @@
+""" Functions for visual post processing on the obtained ratings matrix """ 
+
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.sparse as sp
 
 def matrix_plot(dense_matrix, fname, cutoff=0, title=''):
+    ''' create plot of one dense matrix without axis labels.
+
+        input:  dense_matrix        -dense matrix to be plotted
+                fname               -where to save file
+                cutoff              -at how many rows to cut off matrix
+                title               -title of plot.
+    '''
     if cutoff > 0:
         ax = plt.matshow(dense_matrix[:cutoff,:])
     else:
@@ -13,10 +22,10 @@ def matrix_plot(dense_matrix, fname, cutoff=0, title=''):
     plt.savefig(fname)
 
 def create_sparse_matrix_plot(sparse_matrix, fname='',cutoff=1000, title=''):
-    ''' Create a dense matrix plot, squeezing all entries along specified axis.
-    input:
-        sparse_matrix    - scipy sparse matrix to visualize
-        axis             - axis along which all nnz-elements will be squeezed.
+    ''' create a dense matrix plot, squeezing all entries along specified axis.
+    
+        input:  sparse_matrix       -scipy sparse matrix to visualize
+                axis                -axis along which all nnz-elements will be squeezed.
     '''
     rows,cols,ratings = sp.find(sparse_matrix) 
     ratings_dense = np.zeros(sparse_matrix.shape)

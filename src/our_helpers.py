@@ -1,11 +1,9 @@
+""" Helper functions used in various other files."""
 # coding: utf-8
-"""some helper functions."""
-
 
 import numpy as np
 import scipy.sparse as sp
 import plots as pl
-#import sklearn.model_selection as skm
 import pandas as pd
 import csv
 from helpers import calculate_mse, load_data
@@ -46,6 +44,12 @@ def write_predictions(path_output, ratings):
     np.save(path_output, ratings)
 
 def write_predictions_csv(path_output, ratings):
+    """saving predictions as .csv file.
+    
+       input:   path_output     -path for output
+                ratings         -prediction matrix (D x N)
+    """
+
     (rows, cols, data) = sp.find(ratings)
     fieldnames = ['Id', 'Prediction']
     with open(path_output, "w") as f:
@@ -103,6 +107,11 @@ def split_data(ratings,  p_test=0.1, sparse= True):
 
 
 def create_dataset_blending(path='../data/data_train.csv'):
+    """ split training set into three parts (test, train, probe)
+        to be used by blending.
+    
+        input:   path            -path to dataset
+    """
     ratings = load_data(path)
     __, train, test = split_data(ratings,0.05)
     __, test_test, test_validation = split_data(test, 0.5)
@@ -117,6 +126,12 @@ def create_dataset_blending(path='../data/data_train.csv'):
 
 def create_dataset_surprise(path='../data/data_train.csv',output_path = \
         '../data/data_train_surprise.csv'):
+    """ create dataset that can be read in by surprise library. 
+
+        input:  path            -path to dataset
+                output_path     -path to where dataset should be saved 
+    
+    """  
     ratings = load_data(path)
     rows, cols, ratings = sp.find(ratings)
     rows = rows + 1
@@ -125,6 +140,14 @@ def create_dataset_surprise(path='../data/data_train.csv',output_path = \
     test_pd.to_csv(output_path,index=False)
 
 def bias_correction (full_ratings, test):
+    """ shift the obtained ratings matrix by the mean difference between its 
+    mean and the test dataset's mean.
+
+        input:  full_ratings         -estimated sparse matrix (D X N), to be corrected
+                test                 -test sparse matrix (D X N) with correct ratings
+
+        output: full_ratings         -corrected sparse matrix (D X N)
+    """
     
     nz_rows, nz_cols = test.nonzero()
     nz_test = list( zip(nz_rows, nz_cols))
@@ -142,15 +165,3 @@ def bias_correction (full_ratings, test):
     full_ratings += (mean_te - mean_pr)
     
     return full_ratings
-
-if __name__=="__main__":
-    setup = '''
-from __main__ import compute_error2, compute_error2_slow
-from helpers import load_data
-import scipy.sparse as sp
-path_dataset = '../data/data_train.csv'
-ratings = load_data(path_dataset)
-rows, cols, r = sp.find(ratings)
-'''
-    from timeit import Timer
-    print(min(Timer('compute_error2(ratings,ratings,zip(rows,cols))',setup=setup).repeat(1,3)))
