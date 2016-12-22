@@ -16,53 +16,51 @@ Warning--entry type for "surprise" isn't style-file defined
 --line 15 of file literature_new.bib
 Warning--entry type for "fancyimpute" isn't style-file defined
 --line 22 of file literature_new.bib
-Warning--I didn't find a database entry for "Aberger"
-Warning--I didn't find a database entry for "Dietterich"
-Warning--I didn't find a database entry for "PresentationGrandPrize"
 -- IEEEtran.bst version 1.13 (2008/09/30) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty journal in Andreas2009
 
 Done.
-You've used 8 entries,
+You've used 11 entries,
             4039 wiz_defined-function locations,
-            863 strings with 8494 characters,
-and the built_in function-call counts, 4985 in all, are:
-= -- 387
-> -- 98
-< -- 38
-+ -- 54
-- -- 16
-* -- 236
-:= -- 784
-add.period$ -- 16
-call.type$ -- 8
-change.case$ -- 7
-chr.to.int$ -- 90
-cite$ -- 8
-duplicate$ -- 355
-empty$ -- 419
-format.name$ -- 20
-if$ -- 1111
+            875 strings with 8891 characters,
+and the built_in function-call counts, 7273 in all, are:
+= -- 582
+> -- 152
+< -- 60
++ -- 82
+- -- 25
+* -- 350
+:= -- 1149
+add.period$ -- 22
+call.type$ -- 11
+change.case$ -- 10
+chr.to.int$ -- 138
+cite$ -- 12
+duplicate$ -- 516
+empty$ -- 583
+format.name$ -- 31
+if$ -- 1628
 int.to.chr$ -- 0
-int.to.str$ -- 8
-missing$ -- 66
-newline$ -- 57
-num.names$ -- 8
-pop$ -- 181
+int.to.str$ -- 11
+missing$ -- 93
+newline$ -- 68
+num.names$ -- 11
+pop$ -- 238
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 374
+skip$ -- 547
 stack$ -- 0
-substring$ -- 217
-swap$ -- 270
-text.length$ -- 8
+substring$ -- 330
+swap$ -- 406
+text.length$ -- 14
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 8
-warning$ -- 0
-while$ -- 24
-width$ -- 9
-write$ -- 100
-(There were 7 warnings)
+type$ -- 11
+warning$ -- 1
+while$ -- 39
+width$ -- 13
+write$ -- 132
+(There were 5 warnings)

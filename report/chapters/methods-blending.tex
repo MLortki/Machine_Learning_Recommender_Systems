@@ -9,7 +9,7 @@ others, giving each method a higher weight in the regions where it performs
 best.
 
 The splitting of the kaggle dataset is done as suggested in
-\cite{PresentationGrandPrize}: each method is trained on a fixed subset of 95\% of the
+\cite{Andreas2009}: each method is trained on a fixed subset of 95\% of the
 dataset (training set), while the remaining 5\% are split up equally, and one half is used to
 compare the different methods (probe set) and the other half is used to create a
 valuable prediction of the performance of the final, blended method (test set).  
@@ -20,7 +20,7 @@ proportion of the valuable training data.
 
 The process of linear blending is shown in Figure \ref{fig:blending}. 
 The blending model is obtained by minimizing the mean squared prediction error
-on the probe set as suggested in \cite{PresentationGrandPrize}. 
+on the probe set as suggested in \cite{Andreas2009}. 
 If we call $\mathbf{p}_i$ the vector of $N_P$ ordered predictions of
 method $i$ ($i = 1\ldots N_M$) on the
 probe set, and $\mathbf{r}$ the true values (in the same order), then the weight vector
@@ -56,5 +56,3 @@ vector,
   to predict its performance.}
   \label{fig:blending}
 \end{figure}
-
-
