@@ -31,7 +31,7 @@ item_means = dp.get_item_means(ratings.copy(), nz_row_colindices)
 means , mean= dp.get_global_means(ratings.copy(), nz_ratings) 
 ratings_normalized, train_mean = dp.get_unbiased_matrix(ratings.copy(),user_means,item_means,means,'combined')
 
-print("ALS with number of laten features = 8, ", '$\lamba$', " = 0.06255, threshold: 1e-4")
+print("ALS with number of laten features = 8, ", '$\lambda$', " = 0.06255, threshold: 1e-4")
 
 #matrix factorization with ALS
 item_features, user_features, train_errors, test_errors = ALS_WR(

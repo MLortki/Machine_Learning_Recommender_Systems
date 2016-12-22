@@ -33,12 +33,16 @@ def create_submission(path_output, ratings):
         writer.writeheader()
         for i,row in enumerate(rows):
             valid_rating = min(max(ratings[row,cols[i]],1),5) 
-            #ind = abs(pred - np.around(pred)) <= 0.1
-            #pred[ ind ] = np.around(pred[ ind ])
             _id = "r{0}_c{1}".format(row+1,cols[i]+1)
             writer.writerow({'Id': _id, 'Prediction': valid_rating})
-            
+       
+    
 def write_predictions(path_output, ratings):
+    """saving predictions as .npy file for final blending.
+    
+       input:   path_output     -path for output
+                ratings         -prediction matrix (D x N)
+    """
     np.save(path_output, ratings)
 
 def write_predictions_csv(path_output, ratings):
@@ -54,9 +58,12 @@ def write_predictions_csv(path_output, ratings):
     print('Saved {} predictions at {}'.format(counter,path_output)) 
 
 def split_data(ratings,  p_test=0.1, sparse= True):
+    """split the ratings to training data and test data..
+    
+       input:   ratings         -prediction matrix (D x N)
+                p_test          -
     """
-    split the ratings to training data and test data.
-    """
+    
     min_num_ratings = 0
     num_items_per_user, num_users_per_item = pl.plot_raw_data(ratings, False)
     # set seed
@@ -73,12 +80,10 @@ def split_data(ratings,  p_test=0.1, sparse= True):
 
     # this is supposedly the fastest way of doing this.
     cx = sp.coo_matrix(valid_ratings)
-    if sparse:
-        test = sp.lil_matrix(ratings.shape)
-        train = sp.lil_matrix(ratings.shape)
-    else:
-        test = np.empty(ratings.shape)
-        train = np.empty(ratings.shape)
+
+    test = sp.lil_matrix(ratings.shape)
+    train = sp.lil_matrix(ratings.shape)
+  
         
     for i,j,v in zip(cx.row, cx.col, cx.data):
         # put the element with probability 0.1 in test set.
@@ -90,10 +95,11 @@ def split_data(ratings,  p_test=0.1, sparse= True):
 
     (rows, cols, datas) = sp.find(valid_ratings)
 
-    if sparse:
-        print("Percentage of nz train data: % 2.4f, percentage of nz test data: % \
-                2.4f" % (train.nnz/valid_ratings.nnz, test.nnz/valid_ratings.nnz))
-        assert (train.nnz + test.nnz) == valid_ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
+ 
+    print("Percentage of nz train data: % 2.4f, percentage of nz test data: % \
+            2.4f" % (train.nnz/valid_ratings.nnz, test.nnz/valid_ratings.nnz))
+    assert (train.nnz + test.nnz) == valid_ratings.nnz, "Number of nnz elements in test and train test doesn't sum up!"
+    
     return valid_ratings, train, test
 
 
